@@ -1,7 +1,8 @@
 // init global variables, switches, helper functions
 let myBubbleVis,
     myLineVis,
-    myMapVis;
+    myMapVis,
+    myScatterVis;
 
 // function updateAllVisualizations(){
 //     myPieChart.wrangleData()
@@ -12,6 +13,7 @@ let myBubbleVis,
 let promises = [    
     d3.json('data/asylum_applications.csv'),
     d3.json('data/asylum_decisions.csv'),
+    d3.json('data/population_bycountry.csv')
 ];
 
 Promise.all(promises)
