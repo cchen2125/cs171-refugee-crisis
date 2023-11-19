@@ -11,9 +11,9 @@ let myBubbleVis,
 
 // load data using promises
 let promises = [    
-    d3.json('data/asylum_applications.csv'),
-    d3.json('data/asylum_decisions.csv'),
-    d3.json('data/population_bycountry.csv')
+    d3.csv('data/asylum_applications.csv'),
+    d3.csv('data/asylum_decisions.csv'),
+    d3.csv('data/population_bycountry.csv')
 ];
 
 Promise.all(promises)
@@ -24,8 +24,11 @@ Promise.all(promises)
 function initMainPage(allDataArray) {
 
     // log data
-    console.log(allDataArray);
+    console.log(allDataArray[0]);
+    console.log(allDataArray[1]);
+    console.log(allDataArray[2]);
 
     // TODO: initialize new visualizations
+    myLineVis = new LineVis("linevis", allDataArray[2])
 
 }
