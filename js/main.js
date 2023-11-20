@@ -29,4 +29,5 @@ function initMainPage(allDataArray) {
     // TODO: initialize new visualizations
     myLineVis = new LineVis("linevis", allDataArray[2])
 
+    myBubbleVis = new BubbleVis("bubblevis", allDataArray[1])
 }
