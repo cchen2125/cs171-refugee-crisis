@@ -24,9 +24,7 @@ Promise.all(promises)
 function initMainPage(allDataArray) {
 
     // log data
-    console.log(allDataArray[0]);
-    console.log(allDataArray[1]);
-    console.log(allDataArray[2]);
+    console.log(allDataArray);
 
     // TODO: initialize new visualizations
     myLineVis = new LineVis("linevis", allDataArray[2])
