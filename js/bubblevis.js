@@ -26,7 +26,13 @@ class BubbleVis {
 
         // Set up the pack layout
         vis.pack = d3.pack()
-            .size([vis.width, vis.height]);
+            .size([vis.width, vis.height])
+            .padding(3);
+
+        // Create a tooltip element
+        vis.tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
 
         vis.wrangleData();
     }
@@ -50,12 +56,16 @@ class BubbleVis {
             if (!vis.displayData[country]) {
                 vis.displayData[country] = {
                     recognizedDecisions: 0,
-                    totalDecisions: 0
+                    totalDecisions: 0,
                 };
             }
 
             vis.displayData[country].recognizedDecisions += recognizedDecisions;
             vis.displayData[country].totalDecisions += totalDecisions;
+
+            let percentageRecognized = vis.displayData[country].recognizedDecisions / vis.displayData[country].totalDecisions;
+            vis.displayData[country].percentageRecognized = parseFloat(percentageRecognized * 100).toFixed(2);
+
         });
 
         // console.log(vis.dataByCountry)
@@ -64,7 +74,7 @@ class BubbleVis {
         vis.data = Object.entries(vis.displayData)
             .map(([country, values]) => ({ country, ...values }))
             .sort((a, b) => b.totalDecisions - a.totalDecisions)
-            .slice(0, 30); // Take the top 30 countries
+            .slice(0, 35); // Take the top 35 countries
 
         console.log(vis.data)
 
@@ -74,40 +84,73 @@ class BubbleVis {
     updateVis() {
         let vis=this;
 
-        // Use the pack layout on the data
+        // Create a hierarchical structure with countries as parent nodes.
         let root = d3.hierarchy({ children: vis.data })
-            .sum(d => d.recognizedDecisions); // Set the size of each node based on recognized decisions
+            .sum(d => d.totalDecisions);
 
-        vis.nodes = vis.pack(root).descendants();
+        // Add children to each country node for recognized decisions.
+        root.each(d => {
+            if (d.children) {
+                d.children.forEach(child => {
+                    child.data.children = [{ recognizedDecisions: child.data.recognizedDecisions }];
+                });
+            }
+        });
+        
+        vis.pack(root);
 
         console.log(root)
-        console.log(vis.nodes)
 
         // Place each (leaf) node according to the layout’s x and y values.
-        let node = vis.svg.append("g")
-            .selectAll()
-            .data(root.leaves())
-            .join("g")
-            .attr("transform", d => `translate(${d.x},${d.y})`);
+        let node = vis.svg.selectAll(".node")
+            .data(root.descendants().slice(1))
+            .enter()
+            .append("g")
+            .attr("class", "node")
+            .attr("transform", d => `translate(${d.x},${d.y})`)
+            .on("mouseover", function (event, d) {
+                d3.select(this).select(".inner-circle")
+                    .attr("fill", 'darkorange'); 
+        
+                // Show tooltip with information
+                vis.tooltip
+                    .transition()
+                    .style("opacity", 1)
 
-        // Add a filled circle.
+                vis.tooltip.html(`<strong>${d.data.country}</strong>
+                <br>Recognized Asylum Decisions: ${d3.format(",")(d.data.recognizedDecisions)}
+                <br>Total Asylum Decisions: ${d3.format(",")(d.data.totalDecisions)}
+                <br>Percentage Recognized: ${d.data.percentageRecognized}%`)
+                    .style("left", (event.pageX) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function () {
+                d3.select(this).select(".inner-circle")
+                    .attr("fill", 'orange'); 
+        
+                // Hide tooltip
+                vis.tooltip
+                    .transition()
+                    .style("opacity", 0);
+            });
+
+        // Add a filled circle for total decisions.
         node.append("circle")
-            .attr("fill-opacity", 0.7)
+            .attr("fill-opacity", 0.6)
             .attr("fill", 'orange')
             .attr("r", d => d.r);
 
-        // Add a title.
-        node.append("text")
-            .text(d => d.data.country)
-            .attr("text-anchor", "middle")
-            .attr("dy", "0.35em")
-            .style("fill", "black")
-            .style("font-size", "10px") // Set the font size (adjust as needed)
-            .style("font-weight", "normal")
-            .call(wrap, d => d.r * 2);
+        // Add a smaller circle for recognized decisions.
+        node.filter(d => d.data.recognizedDecisions !== undefined) // Filter to include only nodes with recognized decisions
+            .append("circle")
+            .attr("fill-opacity", .9)
+            .attr("class", "inner-circle")
+            .attr("fill", 'orange') 
+            .attr("r", d => Math.sqrt(d.data.recognizedDecisions / d.data.totalDecisions) * d.r);
 
         // Function to wrap text within a specified width
         function wrap(text, width) {
+            console.log(text, width)
             text.each(function () {
                 var text = d3.select(this),
                     words = text.text().split(/\s+/).reverse(),
@@ -131,7 +174,17 @@ class BubbleVis {
             });
         }
 
+        // Add text.
+        node.append("text")
+            .text(d => d.data.country)
+            .attr("text-anchor", "middle")
+            .attr("dy", "0.35em")
+            .style("fill", "black")
+            .style("font-size", "12px") 
+            .style("font-weight", "normal")
+            .style("pointer-events", "none")
+            .call(wrap, d => d.r/3);
+
         // Update / remove sequence
-        // Tooltip to show exact numbers
     }
 }

@@ -2,10 +2,19 @@ body {
     font-family: 'Neuton', serif;
 }
 
+.tooltip {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: 'Neuton', serif;
+    font-size: 14px;
+    opacity: .9;
+  }
+
 #linevis {
     height: 75vh;
 }
 
 #bubblevis {
-    height: 75vh;
+    height: 100vh;
 }
