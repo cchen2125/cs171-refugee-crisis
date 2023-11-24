@@ -10,7 +10,7 @@ class BubbleVis {
     initVis() {
         let vis= this;
 
-        vis.margin = {top: 20, right: 20, bottom: 20, left: 20};
+        vis.margin = {top: 10, right: 20, bottom: 30, left: 20};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
@@ -18,6 +18,7 @@ class BubbleVis {
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
             .attr("width", vis.width)
             .attr("height", vis.height)
+            .append("g")
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
 
         // scale
@@ -29,10 +30,43 @@ class BubbleVis {
             .size([vis.width, vis.height])
             .padding(3);
 
-        // Create a tooltip element
-        vis.tooltip = d3.select("body").append("div")
+        // Create a tooltip div
+        vis.tooltip = d3.select("body")
+            .append("div")
+            .style("opacity", 0)
             .attr("class", "tooltip")
-            .style("opacity", 0);
+            .attr("id", "bubbleTooltip")
+
+        // Functions to show/update tooltip
+        vis.showTooltip = function(event, d, context) {
+            d3.select(context).select(".inner-circle")
+                .attr("fill", 'darkorange')
+            vis.tooltip
+                .transition()
+                .style("opacity", 1)
+            vis.tooltip
+                .html(`<strong>${d.data.country}</strong>
+                <br>Recognized Asylum Decisions: ${d3.format(",")(d.data.recognizedDecisions)}
+                <br>Total Asylum Decisions: ${d3.format(",")(d.data.totalDecisions)}
+                <br>Percentage Recognized: ${d.data.percentageRecognized}%`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY + 10) + "px");
+        };
+        
+        vis.moveTooltip = function(event, d, context) {
+            vis.tooltip
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY + 10) + "px");
+        };
+        
+        vis.hideTooltip = function(event, d, context) {
+            d3.select(context).select(".inner-circle")
+                .attr("fill", 'orange')
+            vis.tooltip
+                .transition()
+                .duration(200)
+                .style("opacity", 0);
+        };
 
         vis.wrangleData();
     }
@@ -108,31 +142,9 @@ class BubbleVis {
             .append("g")
             .attr("class", "node")
             .attr("transform", d => `translate(${d.x},${d.y})`)
-            .on("mouseover", function (event, d) {
-                d3.select(this).select(".inner-circle")
-                    .attr("fill", 'darkorange'); 
-        
-                // Show tooltip with information
-                vis.tooltip
-                    .transition()
-                    .style("opacity", 1)
-
-                vis.tooltip.html(`<strong>${d.data.country}</strong>
-                <br>Recognized Asylum Decisions: ${d3.format(",")(d.data.recognizedDecisions)}
-                <br>Total Asylum Decisions: ${d3.format(",")(d.data.totalDecisions)}
-                <br>Percentage Recognized: ${d.data.percentageRecognized}%`)
-                    .style("left", (event.pageX) + "px")
-                    .style("top", (event.pageY - 28) + "px");
-            })
-            .on("mouseout", function () {
-                d3.select(this).select(".inner-circle")
-                    .attr("fill", 'orange'); 
-        
-                // Hide tooltip
-                vis.tooltip
-                    .transition()
-                    .style("opacity", 0);
-            });
+            .on("mouseover", function (event, d) { vis.showTooltip(event, d, this); })
+            .on("mousemove", function (event, d) { vis.moveTooltip(event, d, this); })
+            .on("mouseleave", function (event, d) { vis.hideTooltip(event, d, this); })
 
         // Add a filled circle for total decisions.
         node.append("circle")
@@ -179,10 +191,7 @@ class BubbleVis {
             .text(d => d.data.country)
             .attr("text-anchor", "middle")
             .attr("dy", "0.35em")
-            .style("fill", "black")
-            .style("font-size", "12px") 
-            .style("font-weight", "normal")
-            .style("pointer-events", "none")
+            .style('id', "bubble-text")
             .call(wrap, d => d.r/3);
 
         // Update / remove sequence

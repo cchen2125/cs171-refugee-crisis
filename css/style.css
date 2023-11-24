@@ -16,5 +16,16 @@ body {
 }
 
 #bubblevis {
+    height: 110vh;
+}
+
+#bubbletext {
+    fill: black;
+    font-size: 13px;
+    font-weight: normal;
+    pointer-events: none;
+}
+
+#scattervis {
     height: 100vh;
 }
