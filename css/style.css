@@ -29,3 +29,7 @@ body {
 #scattervis {
     height: 100vh;
 }
+
+#mapvis {
+    padding-bottom: 5vh;
+}

@@ -44,7 +44,7 @@
                 <div id="bubblevis"></div>
             </div>
         </div>
-        <p>This might be surprising, because here’s how this compares with their GDP and population [scatter plot with GDP vs. population on axes and dots sized based on asylum accepting]</p>
+        <p>This might be surprising, because here’s how this compares with their GDP and population</p>
         <div class="row">
             <div class="col-md-12">
                 <div id="scattervis"></div>
@@ -54,7 +54,10 @@
 
     <div class="row">
         <h3>Explore the map for yourself</h3>
-        <p>[map visualization here]</p>
+        <div class="btn-group col-auto">
+            <a class="btn btn-primary active">Country of Origin</a>
+            <a class="btn btn-primary">Country of Asylum</a>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div id="mapvis"></div>
@@ -72,6 +75,10 @@
 
 <!-- d3 -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
+
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
 <!-- Visualization objects -->
 <script src="js/mapvis.js"></script>
