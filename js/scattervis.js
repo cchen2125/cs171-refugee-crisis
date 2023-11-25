@@ -82,11 +82,10 @@ class ScatterVis {
                 .transition()
                 .style("opacity", 1)
             vis.tooltip
-                .html('test')
-                // .html(`<strong>${d.data.country}</strong>
-                // <br>Recognized Asylum Decisions: ${d3.format(",")(d.data.recognizedDecisions)}
-                // <br>Total Asylum Decisions: ${d3.format(",")(d.data.totalDecisions)}
-                // <br>Percentage Recognized: ${d.data.percentageRecognized}%`)
+                .html(`Country ${d[0]} 
+                <br>GDP (2022): ${d[1].gdp} 
+                <br>Total Population (2022): ${d[1].population} 
+                <br>Recognized Asylum Decisions (Total): ${d[1].recognizedDecisions}`)
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY + 10) + "px");
         };
