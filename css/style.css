@@ -2,6 +2,10 @@ body {
     font-family: 'Neuton', serif;
 }
 
+.row {
+    padding: 5px
+}
+
 .tooltip {
     background-color: white;
     padding: 10px;
@@ -32,4 +36,26 @@ body {
 
 #mapvis {
     padding-bottom: 5vh;
+}
+
+#time-period-slider {
+    width: 100px;
+    display: inline-block;
+    margin: 0 15px;
+  }
+  
+.range-slider-value {
+    background-color: #EFE9E9;
+    color: #888;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 2px 10px;
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.noUi-connect {
+    background: maroon;
 }

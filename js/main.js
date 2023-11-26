@@ -37,4 +37,49 @@ function initMainPage(allDataArray) {
     myScatterVis = new ScatterVis("scattervis", allDataArray[3], allDataArray[4], allDataArray[1])
 
     myMapVis = new MapVis("mapvis", allDataArray[5], allDataArray[2])
+    makeSlider()
+}
+
+function activateButton(button) {
+    const buttons = document.querySelectorAll('.map-button');
+    buttons.forEach(button => {
+        button.classList.remove('active');
+    });
+    button.classList.add('active');
+
+    myMapVis.wrangleData()
+}
+
+function updateMap() {
+    myMapVis.wrangleData()
+}
+
+function makeSlider() {
+    // get slider
+    myMapVis.slider = document.getElementById('time-period-slider')
+
+    // define slider functionality
+    noUiSlider.create(myMapVis.slider, {
+        start: [parseInt(myMapVis.formatDate(d3.min(myMapVis.refugeeData, d=> d.Year))), parseInt(myMapVis.formatDate(d3.max(myMapVis.refugeeData, d=> d.Year)))],
+        connect: true,
+        behaviour: 'tap-drag',
+        step: 1,
+        margin: 0,
+        range: {
+            'min': parseInt(myMapVis.formatDate(d3.min(myMapVis.refugeeData, d=> d.Year))),
+            'max': parseInt(myMapVis.formatDate(d3.max(myMapVis.refugeeData, d=> d.Year)))
+        }
+    });
+
+    // get slider range values
+    var valuesDivs = document.getElementsByClassName("range-slider-value");
+    valuesDivs[0].innerHTML = myMapVis.formatDate(d3.min(myMapVis.refugeeData, d=> d.Year))
+    valuesDivs[1].innerHTML = myMapVis.formatDate(d3.max(myMapVis.refugeeData, d=> d.Year))
+
+    // attach an event listener to the slider
+    myMapVis.slider.noUiSlider.on('update', function (values, handle) {
+        valuesDivs[handle].innerHTML = Math.round(values[handle]);
+
+        updateMap()
+    });
 }

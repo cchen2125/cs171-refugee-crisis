@@ -18,6 +18,10 @@ class MapVis {
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = 0.5*vis.width - vis.margin.top - vis.margin.bottom;
 
+        // Parse Year
+        vis.parseDate = d3.timeParse("%Y")
+        vis.formatDate = d3.timeFormat("%Y");
+
         // scale based on the height and default  value
         let zoomFactor = vis.height / 650; 
         let scale = 249.5 * zoomFactor;
@@ -71,6 +75,10 @@ class MapVis {
             .attr("stroke", "black")
             .attr("stroke-opacity", 0.25);
 
+        // color scale
+        vis.colorScale = d3.scaleSequential(d3.interpolateReds)
+            .domain([0, vis.width * 0.25])
+
         // TODO: fix legend
 
         // Create a legend group and position it
@@ -80,7 +88,8 @@ class MapVis {
 
         // legend scale
         vis.legendScale = d3.scaleLinear()
-            .range([0, vis.width * 0.25]);
+            .range([0, vis.width * 0.25])
+            .domain([0, vis.width * 0.25]);
 
         // legend axis group
         vis.legendAxisGroup = vis.legend.append('g')
@@ -97,6 +106,20 @@ class MapVis {
             .attr("x2", "100%")
             .attr("y2", "0%");
 
+        //legend color bar
+        vis.gradient.selectAll("stop")
+            .data(vis.colorScale.ticks().map((t, i, n) => ({ offset: `${100*i/n.length}%`, color: vis.colorScale(t) })))
+            .enter().append("stop")
+            .attr("offset", d => d.offset)
+            .attr("stop-color", d => d.color);
+        
+        vis.legend.append("rect")
+            .attr("width", vis.legendScale(vis.width * 0.25))
+            .attr("height", vis.height / 30)
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("fill", "url(#gradient)")
+
         //TODO: drag and zoom
         /*//create zoom handler
         vis.zoom = d3.zoom()
@@ -106,9 +129,6 @@ class MapVis {
                     .attr('transform', event.transform);
             });*/
 
-        // color scale
-        vis.colorScale = d3.scaleSequential(d3.interpolateReds)
-
         vis.wrangleData()
 
     }
@@ -116,17 +136,19 @@ class MapVis {
     wrangleData() {
         let vis = this;
 
-        vis.selected_cat = "Country of origin"
-        vis.selected_val = "Refugees under UNHCR's mandate"
+        // get slider range
+        let valuesDivs = document.getElementsByClassName("range-slider-value")
+        let min_date = vis.parseDate(valuesDivs[0].innerHTML)
+        let max_date = vis.parseDate(valuesDivs[1].innerHTML)
+
+        vis.filteredData = vis.refugeeData.filter(d => {return (d.Year >= min_date) && (d.Year <= max_date)})
+
+        // get selected variables
+        vis.selected_cat = document.querySelector(".map-button.active").innerText
+        vis.selected_val = d3.select("#attribute").property("value");
 
         // aggregate refugee data
-        vis.parseTime = d3.timeParse("%Y")
-        
-        vis.refugeeData.forEach(function(d) {
-            d.Year = vis.parseTime(d.Year);
-        })
-
-        vis.dataByCountry = Array.from(d3.rollup(vis.refugeeData,v=> d3.sum(v, d=>d[vis.selected_val]), d=>d[vis.selected_cat]), ([key, value]) => ({key, value}))
+        vis.dataByCountry = Array.from(d3.rollup(vis.filteredData,v=> d3.sum(v, d=>d[vis.selected_val]), d=>d[vis.selected_cat]), ([key, value]) => ({key, value}))
 
         vis.displayData = {}
         vis.dataByCountry.forEach(d=> {
@@ -134,13 +156,6 @@ class MapVis {
                 value: d.value
             }
         })
-
-        console.log(vis.displayData)
-
-        /* get country name from geodata
-        vis.geoData.objects.countries.geometries.forEach(d=>{
-            console.log(d.properties)
-        })*/
 
         vis.updateVis()
     }
@@ -162,18 +177,6 @@ class MapVis {
                 } else {
                     return "lightgray"
                 }});
-        
-        //legend color bar
-        vis.gradient.selectAll("stop")
-            .data(vis.colorScale.ticks().map((t, i, n) => ({ offset: `${100*i/n.length}%`, color: vis.colorScale(t) })))
-            .enter().append("stop")
-            .attr("offset", d => d.offset)
-            .attr("stop-color", d => d.color);
-        
-        vis.legend.append("rect")
-            .attr("width", vis.legendScale(10**maxval))
-            .attr("height", vis.height / 30)
-            .attr("fill", "url(#gradient)")
             
 
         // legend axis
@@ -194,13 +197,13 @@ class MapVis {
                 
                 if (Object.keys(vis.displayData).includes(d.properties.name)) {
                     tooltipHTML =  `<div>
-                    <h3>Name: ${d.properties.name}</h3>
-                    <h4>Value: ${d3.format(",")(vis.displayData[d.properties.name].value)}</h4>
+                    <h3>${d.properties.name}</h3>
+                    <h4>${d3.format(",")(vis.displayData[d.properties.name].value)}</h4>
                 </div>`
                 } else {
                     tooltipHTML = `<div>
-                    <h3>Name: ${d.properties.name}</h3>
-                    <h4>Value: N/A</h4>
+                    <h3>${d.properties.name}</h3>
+                    <h4>N/A</h4>
                 </div>`
                 }
 
