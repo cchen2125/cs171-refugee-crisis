@@ -60,7 +60,7 @@ class LineVis {
             .text("Year")
 
         // Color scale setup
-        vis.highlight = ["Afghanistan", "Syrian Arab Rep.", "Ukraine", "Myanmar", "South Sudan"]
+        vis.highlight = ["Afghanistan", "Syria", "Ukraine", "Myanmar", "South Sudan"]
 
         vis.color = d3.scaleOrdinal()
             .range(d3.schemeTableau10)

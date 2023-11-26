@@ -150,9 +150,6 @@ class MapVis {
 
         let maxval = Math.log(d3.max(vis.dataByCountry, d=> d.value)) / Math.log(10);
 
-        console.log(vis.displayData["China"].value)
-        console.log(Math.log(vis.displayData["China"].value) / Math.log(10))
-
         vis.colorScale.domain([0,maxval])
         vis.legendScale.domain([0,10**maxval])
 
@@ -180,7 +177,7 @@ class MapVis {
             
 
         // legend axis
-        vis.legendAxis = d3.axisBottom(vis.legendScale).tickFormat(d3.format(".0e"));
+        vis.legendAxis = d3.axisBottom(vis.legendScale).tickFormat(d3.formatPrefix(",.0", 1e6));
 
         // legend axis group and call
         vis.legendAxisGroup.call(vis.legendAxis);
@@ -198,7 +195,7 @@ class MapVis {
                 if (Object.keys(vis.displayData).includes(d.properties.name)) {
                     tooltipHTML =  `<div>
                     <h3>Name: ${d.properties.name}</h3>
-                    <h4>Value: ${vis.displayData[d.properties.name].value}</h4>
+                    <h4>Value: ${d3.format(",")(vis.displayData[d.properties.name].value)}</h4>
                 </div>`
                 } else {
                     tooltipHTML = `<div>
