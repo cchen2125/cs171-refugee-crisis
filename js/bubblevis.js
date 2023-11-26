@@ -108,7 +108,7 @@ class BubbleVis {
         vis.data = Object.entries(vis.displayData)
             .map(([country, values]) => ({ country, ...values }))
             .sort((a, b) => b.totalDecisions - a.totalDecisions)
-            .slice(0, 35); // Take the top 35 countries
+            .slice(0, 37); // Take the top 37 countries
 
         console.log(vis.data)
 

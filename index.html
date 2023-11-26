@@ -35,7 +35,7 @@
                 <div id="linevis"></div>
             </div>
         </div>
-        <p>The number of Syrian refugees has been the highest every year since 2018. This might be surprising, since it hasn’t been mentioned in the news in the past x months. [images of news clippings]</p>
+        <p>The number of Syrian refugees has been the highest every year since 2018. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines. [images of news clippings]</p>
     </div>
 
     <div class="row">
@@ -45,10 +45,20 @@
                 <div id="bubblevis"></div>
             </div>
         </div>
-        <p>This might be surprising, because here’s how this compares with their GDP and population</p>
+        <p>This might be surprising, because here’s how their asylum acceptances compare with their GDP</p>
         <div class="row">
             <div class="col-md-12">
                 <div id="scattervis"></div>
+            </div>
+            <div class="col-4">
+                <select id="select-box" class="form-control rounded" onchange="updateVisualization(data)">
+                    <option value="GDP">GDP (in USD)</option>
+                    <option value="GROWTH">GDP Growth (Annual %)</option>
+                    <option value="POP">Total Population</option>
+                    <option value="POP_GROWTH">Population Growth (Annual %)</option>
+                    <option value="POP_DENSITY">Population Density</option>
+                    <option value="LIFE_EXPECTANCY">Life Expectancy at Birth</option>
+                </select>
             </div>
         </div>
     </div>

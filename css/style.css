@@ -1,5 +1,5 @@
 body {
-    font-family: 'Neuton', serif;
+    font-family: 'Libre Franklin', serif;
 }
 
 .row {
@@ -10,7 +10,7 @@ body {
     background-color: white;
     padding: 10px;
     border-radius: 10px;
-    font-family: 'Neuton', serif;
+    font-family: 'Libre Franklin', serif;
     font-size: 14px;
     opacity: .9;
   }
@@ -28,6 +28,16 @@ body {
     font-size: 13px;
     font-weight: normal;
     pointer-events: none;
+}
+
+.dots {
+    stroke-width: 1px;
+    stroke: white;
+    opacity: .8
+  }
+
+.dots:hover {
+    stroke: black;
 }
 
 #scattervis {

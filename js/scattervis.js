@@ -11,8 +11,8 @@ class ScatterVis {
     initVis() {
         let vis= this;
 
-        vis.margin = {top: 40, right: 20, bottom: 20, left: 20};
-        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
+        vis.margin = {top: 40, right: 0, bottom: 10, left: 40};
+        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right + 50;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
         // init drawing area
@@ -25,26 +25,24 @@ class ScatterVis {
         // axis and scale
         // X axis
         vis.x = d3.scaleLinear()
-            .domain([0, 25462700000000])
-            .range([ 0, vis.width ]);
+            .range([20, vis.width-60]);
 
         vis.svg.append("g")
-        .attr("transform", "translate(0," + vis.height + ")")
-        .call(d3.axisBottom(vis.x).ticks(3));
+            .attr("transform", `translate(0, ${vis.height-80})`)
+            .call(d3.axisBottom(vis.x).ticks(5));
 
         // X-axis label:
         vis.svg.append("text")
             .attr("text-anchor", "end")
-            .attr("x", vis.width)
-            .attr("y", vis.height+50 )
-            .text("GDP per Capita")
+            .attr("x", vis.width-47)
+            .attr("y", vis.height-40)
+            .text("GDP (in USD)")
             .style("opacity", 1)
             .style("fill", "black");
 
         // Y axis
         vis.y = d3.scaleLinear()
-            .domain([0, 1412175000])
-            .range([vis.height, 0]);
+            .range([vis.height-80, 0]);
 
         vis.svg.append("g")
             .call(d3.axisLeft(vis.y));
@@ -54,12 +52,11 @@ class ScatterVis {
             .attr("text-anchor", "end")
             .attr("x", 0)
             .attr("y", -20 )
-            .text("Population (2022)")
+            .text("Asylum Acceptances (Total)")
             .attr("text-anchor", "start")
 
         // Add a scale for bubble size
         vis.z = d3.scaleSqrt()
-            .domain([0, 1000000])
             .range([4, 60]);
 
         // Add a scale for bubble color
@@ -82,10 +79,10 @@ class ScatterVis {
                 .transition()
                 .style("opacity", 1)
             vis.tooltip
-                .html(`Country ${d[0]} 
+                .html(`<strong>${d[0]}</strong> 
                 <br>GDP (2022): ${d[1].gdp} 
                 <br>Total Population (2022): ${d[1].population} 
-                <br>Recognized Asylum Decisions (Total): ${d[1].recognizedDecisions}`)
+                <br>Recognized Asylum Decisions: ${d[1].recognizedDecisions}`)
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY + 10) + "px");
         };
@@ -106,16 +103,15 @@ class ScatterVis {
         };
 
         // Functions to handle highlight and no highlight
-        vis.highlight = function(d){
-            // reduce opacity of all groups
-            d3.selectAll(".bubbles").style("opacity", .05)
-            // except the one that is hovered
-            d3.selectAll("."+d).style("opacity", 1)
-        }
-
-        vis.noHighlight = function(d){
-            d3.selectAll(".bubbles").style("opacity", 1)
-        }
+        // vis.highlight = function(d){
+        //     // reduce opacity of all groups
+        //     vis.svg.selectAll(".dots").style("opacity", .5)
+        //     // except the one that is hovered
+        //     vis.svg.selectAll(".dot").style("opacity", 1)
+        // }
+        // vis.noHighlight = function(){
+        //     vis.svg.selectAll(".dots").style("opacity", 1)
+        // }
 
         vis.wrangleData()
 
@@ -123,6 +119,8 @@ class ScatterVis {
 
     wrangleData() {
         let vis = this;
+
+        vis.sortingOrder = document.getElementById("select-box").value
 
         vis.displayData = {};
 
@@ -146,6 +144,7 @@ class ScatterVis {
 
             if (!vis.displayData[country]) {
                 vis.displayData[country] = {
+                    recognizedDecisions: 0,
                     gdp: 0,
                     population: 0               
                 };
@@ -157,10 +156,20 @@ class ScatterVis {
 
         // Filter out countries with no GDP/population data
         vis.displayData = Object.fromEntries(
-            Object.entries(vis.displayData).filter(([country, data]) => data.gdp !== undefined && data.population !== undefined)
+            Object.entries(vis.displayData).filter(([country, data]) => data.gdp !== undefined && data.population !== undefined && data.recognizedDecisions !== 0)
         );
 
         console.log(vis.displayData)
+
+        // update scales and axes
+        vis.x
+            .domain([0, 25462700000000])
+
+        vis.y
+            .domain([0, 1000000])
+
+        vis.z
+            .domain([0, 1000000])
 
         vis.updateVis()
     }
@@ -174,9 +183,9 @@ class ScatterVis {
             .enter()
             .append("g")
             .attr("class", "dots")
-            .attr("transform", d => `translate(${vis.x(d[1].gdp)}, ${vis.y(d[1].population)})`)
+            .attr("transform", d => `translate(${vis.x(d[1].gdp)}, ${vis.y(d[1].recognizedDecisions)})`)
 
-            // hover functions
+        //     // hover functions
             .on("mouseover", function (event, d) { vis.showTooltip(event, d, this); })
             .on("mousemove", function (event, d) { vis.moveTooltip(event, d, this); })
             .on("mouseleave", function (event, d) { vis.hideTooltip(event, d, this); });
@@ -184,6 +193,7 @@ class ScatterVis {
         dots.append("circle")
             .attr("fill-opacity", 0.6)
             .attr("fill", 'orange')
+            .attr("class", "dot")
             .attr("r", d => vis.z(d[1].recognizedDecisions));
 
         //     .attr("class", function(d) { return "bubbles " + d.continent })
