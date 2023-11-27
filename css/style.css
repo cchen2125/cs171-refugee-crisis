@@ -69,3 +69,8 @@ body {
 .noUi-connect {
     background: maroon;
 }
+
+#guess-button {
+    background: rgb(239, 226, 207);
+    border-radius: 5px;
+}
