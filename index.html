@@ -23,14 +23,20 @@
 
 <div class="container">
 
-    <div class="row">
-        <div class="col-md-12">
-            <h1 id="heading">What do you know about refugees in our world?</h1>
+     <div class="row">
+        <div class="col-md-12 heading">
+            <h1 id="heading">What do you know about refugees and displaced peoples in our world?</h1>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-12" id="guess-section">
+        <div class="col-md-12 heading2">
+            <h1 id="heading2">In 2022, one of every 74 people on the planet were living displaced from their home, due to conflict, persecution, or violence. Over 108 million people.            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12 heading" id="guess-section">
             <h3>Where is the home country of the most refugees right now?</h3>
             <div class="form-group">
                 <input type="text" id="guess" placeholder="Country">
@@ -46,23 +52,33 @@
                 <div id="linevis"></div>
             </div>
         </div>
-        <p>The number of Syrian refugees has been the highest every year since 2018. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines. [images of news clippings]</p>
     </div>
 
     <div class="row">
-        <h3>Which countries accept the most applications from asylum seekers?</h3>
-        <div class="row">
+        <div class="col-md-12 heading">
+            <h2>The number of Syrian refugees has been the highest every year since 2018. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines.</h2>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12 heading">
+            <h2>Which countries accept the most applications from asylum seekers?</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row gdp-transition">
             <div class="col-md-12">
                 <div id="bubblevis"></div>
             </div>
         </div>
-        <p>This might be surprising, because here’s how their asylum acceptances compare with their GDP</p>
-        <div class="row">
+        <h3 class="gdp-transition">This might be surprising, because here’s how their asylum acceptances compare with their GDP:</h3>
+        <div class="row gdp-transition">
             <div class="col-md-12">
                 <div id="scattervis"></div>
             </div>
-            <div class="col-4">
-                <p>Toggle to see more relationships with asylum acceptances:</p>
+            <div class="col-md-12">
+                <h4>Toggle to see more relationships with asylum acceptances:</h4>
                 <select id="select-box" class="form-control rounded" onchange="categoryChange()">
                     <option value="gdp">GDP (in USD)</option>
                     <option value="growth">GDP Growth (Annual %)</option>
@@ -75,7 +91,12 @@
     </div>
 
     <div class="row">
-        <h3>Explore the map for yourself</h3>
+        <div class="col-md-12 heading2">
+            <h2>Explore the map for yourself:</h2>
+        </div>
+    </div>
+
+    <div class="row map-page">
         <div class="row">
             <div class="btn-group col-auto">
                 <a class="btn btn-primary map-button active" onclick="activateButton(this)">Country of origin</a>
@@ -108,7 +129,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row sources">
         <h3>
             Sources
         </h3>
