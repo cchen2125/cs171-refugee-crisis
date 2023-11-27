@@ -68,6 +68,14 @@ body {
     background: maroon;
 }
 
+.heading {
+    height: 100vh;
+    background-color: #B85C38;
+    color: #F1DEC9;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #heading {
     text-align: center;
