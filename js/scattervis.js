@@ -9,7 +9,7 @@ class ScatterVis {
     }
 
     initVis() {
-        let vis= this;
+        let vis = this;
 
         vis.margin = {top: 40, right: 0, bottom: 10, left: 40};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right + 50;
@@ -22,20 +22,23 @@ class ScatterVis {
             .append("g")
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
         
-        // axis and scale
-        // X axis
         vis.x = d3.scaleLinear()
             .range([20, vis.width-60]);
 
+        // axis and scale
         vis.svg.append("g")
             .attr("transform", `translate(0, ${vis.height-80})`)
-            .call(d3.axisBottom(vis.x).ticks(5));
+            .attr("class", "x-axis");
+
+        vis.xAxis = d3.axisBottom()
+            .scale(vis.x);
 
         // X-axis label:
         vis.svg.append("text")
             .attr("text-anchor", "end")
             .attr("x", vis.width-47)
             .attr("y", vis.height-40)
+            .attr("class", "x-label")
             .text("GDP (in USD)")
             .style("opacity", 1)
             .style("fill", "black");
@@ -45,7 +48,11 @@ class ScatterVis {
             .range([vis.height-80, 0]);
 
         vis.svg.append("g")
-            .call(d3.axisLeft(vis.y));
+            .attr("transform", `translate(20,0)`)
+            .attr("class", "y-axis");
+
+        vis.yAxis = d3.axisBottom()
+            .scale(vis.y);
 
         // Y-axis label:
         vis.svg.append("text")
@@ -102,6 +109,15 @@ class ScatterVis {
                 .style("opacity", 0);
         };
 
+        // Zoom
+        vis.xOrig = vis.x; 
+        vis.yOrig = vis.y; // Save original scales
+
+        // Disable mousedown and drag in zoom, when you activate zoom (by .call)
+		// vis.svg.select(".brush").call(vis.zoom)
+        //     .on("mousedown.zoom", null)
+        //     .on("touchstart.zoom", null);
+
         // Functions to handle highlight and no highlight
         // vis.highlight = function(d){
         //     // reduce opacity of all groups
@@ -120,8 +136,6 @@ class ScatterVis {
     wrangleData() {
         let vis = this;
 
-        vis.sortingOrder = document.getElementById("select-box").value
-
         vis.displayData = {};
 
         vis.acceptances.forEach(d => {
@@ -137,39 +151,41 @@ class ScatterVis {
             vis.displayData[country].recognizedDecisions += recognizedDecisions;
         });
 
-        vis.gdpData.forEach(d => {
-            let country = d["country"];
-            let gdp = parseFloat(d["GDP_USD"]).toFixed(2);
-            let population = parseInt(d["2022_population"], 10);
+        console.log(vis.countryData)
+        
+        vis.countryData.forEach(d => {
+            let country = d["Country Name"];
+            let seriesName = d["Series Name"];
 
-            if (!vis.displayData[country]) {
-                vis.displayData[country] = {
-                    recognizedDecisions: 0,
-                    gdp: 0,
-                    population: 0               
-                };
+            if (vis.displayData[country]) {
+                switch (seriesName) {
+                    case "GDP (current US$)":
+                        vis.displayData[country].gdp = parseInt(d["2022 [YR2022]"]);
+                        break;
+                    case "Population, total":
+                        vis.displayData[country].population = parseInt(d["2022 [YR2022]"]);
+                        break;
+                    case "GDP growth (annual %)":
+                        vis.displayData[country].growth = parseFloat(d["2022 [YR2022]"]).toFixed(2);
+                        break;
+                    case "Population growth (annual %)":
+                        vis.displayData[country].pop_growth = parseFloat(d["2022 [YR2022]"]).toFixed(2);
+                        break;
+                    case "Population density (people per sq. km of land area)":
+                        vis.displayData[country].pop_density = parseInt(d["2021 [YR2021]"]);
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            vis.displayData[country].gdp = gdp;
-            vis.displayData[country].population = population;
         });
 
         // Filter out countries with no GDP/population data
         vis.displayData = Object.fromEntries(
-            Object.entries(vis.displayData).filter(([country, data]) => data.gdp !== undefined && data.population !== undefined && data.recognizedDecisions !== 0)
+            Object.entries(vis.displayData).filter(([country, data]) => data.population !== undefined && !isNaN(data.gdp) && data.recognizedDecisions !== 0)
         );
 
         console.log(vis.displayData)
-
-        // update scales and axes
-        vis.x
-            .domain([0, 25462700000000])
-
-        vis.y
-            .domain([0, 1000000])
-
-        vis.z
-            .domain([0, 1000000])
 
         vis.updateVis()
     }
@@ -177,106 +193,104 @@ class ScatterVis {
     updateVis() {
         let vis = this;
 
+        vis.sortingOrder = document.getElementById("select-box").value
+
+        vis.min = d3.min(Object.values(vis.displayData), d => d[vis.sortingOrder]);
+        vis.max = d3.max(Object.values(vis.displayData), d => d[vis.sortingOrder]);
+
+        console.log(vis.min)
+        console.log(vis.max)
+
+        // Creating X scale
+        vis.x = d3.scaleLinear()
+            .domain([vis.min, vis.max])
+            .range([20, vis.width-60]);
+
+        vis.svg.select(".x-axis")
+            .call(d3.axisBottom(vis.x)
+            .ticks(5)
+            .tickFormat(d3.format(".2s"))
+        );
+
+        vis.y
+            .domain([0, 1000000])
+
+        vis.z
+            .domain([0, 1000000])
+
+        vis.svg.select(".y-axis")
+            .call(d3.axisLeft(vis.y));
+
+        // Update x-axis label
+        let selectedOption = document.getElementById("select-box").options[document.getElementById("select-box").selectedIndex];
+        vis.selectedValue = selectedOption.text;
+        d3.select(".x-label")
+            .text(vis.selectedValue);
+
         // Add group for dots
         let dots = vis.svg.selectAll(".dots")
-            .data(Object.entries(vis.displayData))
-            .enter()
+            .data(Object.entries(vis.displayData));
+
+        // Enter selection
+        let enterDots = dots.enter()
             .append("g")
             .attr("class", "dots")
-            .attr("transform", d => `translate(${vis.x(d[1].gdp)}, ${vis.y(d[1].recognizedDecisions)})`)
-
-        //     // hover functions
             .on("mouseover", function (event, d) { vis.showTooltip(event, d, this); })
             .on("mousemove", function (event, d) { vis.moveTooltip(event, d, this); })
             .on("mouseleave", function (event, d) { vis.hideTooltip(event, d, this); });
 
+        // Merge the enter selection with the existing selection
+        dots = enterDots
+            .merge(dots)
+            .attr("transform", d => `translate(${vis.x(d[1][vis.sortingOrder])}, ${vis.y(d[1].recognizedDecisions)})`);
+
+        // Append circles to the merged selection 
         dots.append("circle")
             .attr("fill-opacity", 0.6)
             .attr("fill", 'orange')
             .attr("class", "dot")
             .attr("r", d => vis.z(d[1].recognizedDecisions));
 
+        // Update selection
+        dots.select(".dot")
+            .attr("r", d => vis.z(d[1].recognizedDecisions));
+
+        // Exit selection
+        dots.exit().remove();
+
+        // Zoom function
+        // vis.zoomFunction = function(event) {
+        //     let { x, y, k } = event.transform;
+        
+        //     console.log(k)
+
+        //     // Update scales
+        //     vis.x.range([20 * k, (vis.width - 60) * k]);
+        //     vis.y.range([(vis.height - 80) * k, 0]);
+
+        //     // Update axes
+        //     vis.svg.select(".x-axis").call(vis.xAxis);
+        //     vis.svg.select(".y-axis").call(vis.yAxis);
+        
+        //     // Update circles or other elements as needed
+        //     vis.updateVis();
+        // };
+
+        // // Initialize the zoom component
+        // vis.zoom = d3.zoom()
+        //     .extent([[0, 0], [vis.width, vis.height]])
+        //     .scaleExtent([1, 20])
+        //     .on("zoom", vis.zoomFunction);
+
+        // // Zoom rectangle
+        // vis.svg.append("rect")
+        //     .attr("width", vis.width)
+        //     .attr("height", vis.height)
+        //     .style("fill", "none")
+        //     .style("pointer-events", "all")
+        //     .call(vis.zoom);
+
         //     .attr("class", function(d) { return "bubbles " + d.continent })
         //     .style("fill", function (d) { return myColor(d.continent); } )
     }
 }
-
-
-//     // ---------------------------//
-//     //       LEGEND              //
-//     // ---------------------------//
-
-//     // Add legend: circles
-//     var valuesToShow = [10000000, 100000000, 1000000000]
-//     var xCircle = 390
-//     var xLabel = 440
-//     svg
-//       .selectAll("legend")
-//       .data(valuesToShow)
-//       .enter()
-//       .append("circle")
-//         .attr("cx", xCircle)
-//         .attr("cy", function(d){ return height - 100 - z(d) } )
-//         .attr("r", function(d){ return z(d) })
-//         .style("fill", "none")
-//         .attr("stroke", "black")
-
-//     // Add legend: segments
-//     svg
-//       .selectAll("legend")
-//       .data(valuesToShow)
-//       .enter()
-//       .append("line")
-//         .attr('x1', function(d){ return xCircle + z(d) } )
-//         .attr('x2', xLabel)
-//         .attr('y1', function(d){ return height - 100 - z(d) } )
-//         .attr('y2', function(d){ return height - 100 - z(d) } )
-//         .attr('stroke', 'black')
-//         .style('stroke-dasharray', ('2,2'))
-
-//     // Add legend: labels
-//     svg
-//       .selectAll("legend")
-//       .data(valuesToShow)
-//       .enter()
-//       .append("text")
-//         .attr('x', xLabel)
-//         .attr('y', function(d){ return height - 100 - z(d) } )
-//         .text( function(d){ return d/1000000 } )
-//         .style("font-size", 10)
-//         .attr('alignment-baseline', 'middle')
-
-//     // Legend title
-//     svg.append("text")
-//       .attr('x', xCircle)
-//       .attr("y", height - 100 +30)
-//       .text("Population (M)")
-//       .attr("text-anchor", "middle")
-
-//     // Add one dot in the legend for each name.
-//     var size = 20
-//     var allgroups = ["Asia", "Europe", "Americas", "Africa", "Oceania"]
-//     svg.selectAll("myrect")
-//       .data(allgroups)
-//       .enter()
-//       .append("circle")
-//         .attr("cx", 390)
-//         .attr("cy", function(d,i){ return 10 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
-//         .attr("r", 7)
-//         .style("fill", function(d){ return myColor(d)})
-//         .on("mouseover", highlight)
-//         .on("mouseleave", noHighlight)
-
-//     // Add labels beside legend dots
-//     svg.selectAll("mylabels")
-//       .data(allgroups)
-//       .enter()
-//       .append("text")
-//         .attr("x", 390 + size*.8)
-//         .attr("y", function(d,i){ return i * (size + 5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
-//         .style("fill", function(d){ return myColor(d)})
-//         .text(function(d){ return d})
-//         .attr("text-anchor", "left")
-//         .style("alignment-baseline", "middle")
-//         .on("mouseover", highlight)
-//         .on("mouseleave", noHighlight);

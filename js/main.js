@@ -29,7 +29,7 @@ function initMainPage(allDataArray) {
     // log data
     console.log(allDataArray);
 
-    // TODO: initialize new visualizations
+    // initialize new visualizations
     myLineVis = new LineVis("linevis", allDataArray[2])
 
     myBubbleVis = new BubbleVis("bubblevis", allDataArray[1])
@@ -38,6 +38,10 @@ function initMainPage(allDataArray) {
 
     myMapVis = new MapVis("mapvis", allDataArray[5], allDataArray[2])
     makeSlider()
+}
+
+function categoryChange() {
+    myScatterVis.updateVis();
 }
 
 function activateButton(button) {
