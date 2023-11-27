@@ -30,17 +30,17 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="guess-section">
             <h3>Where is the home country of the most refugees right now?</h3>
             <div class="form-group">
                 <input type="text" id="guess" placeholder="Country">
-                <button type="submit"  id="guess-button" onclick="checkAnswer()">Submit</button>
+                <button type="submit" id="guess-button" onclick="checkAnswer()">Submit</button>
             </div>
-            
+            <div id="answer"></div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="linegraph-section">
         <div class="row">
             <div class="col-md-12">
                 <div id="linevis"></div>

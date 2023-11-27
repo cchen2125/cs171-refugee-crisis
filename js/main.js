@@ -40,6 +40,25 @@ function initMainPage(allDataArray) {
     makeSlider()
 }
 
+function checkAnswer() {
+    let guess = document.getElementById("guess").value
+
+    console.log(guess)
+
+    let close_answers = ["afghanistan", "ukraine"]
+
+    if (guess.toLowerCase() == "syria") {
+        document.getElementById("answer").innerHTML = "<h4>Correct! Below is a more comprehensive look at where refugees come from</h4>"
+    } else if (close_answers.includes(guess.toLowerCase())) {
+        document.getElementById("answer").innerHTML = "<h4>Close! Below is a more comprehensive look at where refugees come from</h4>"
+    } else {
+        document.getElementById("answer").innerHTML = "<h4>Incorrect! Below is a more comprehensive look at where refugees come from</h4>"
+    }
+
+    document.getElementById("linegraph-section").style.visibility = "visible";
+    document.getElementById("answer").style.color = "#8D2400";
+}
+
 function categoryChange() {
     myScatterVis.updateVis();
 }

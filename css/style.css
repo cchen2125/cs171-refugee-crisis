@@ -79,4 +79,14 @@ body {
     display:flex;
     justify-content: center;
     align-items: center;
+    text-align:center;
+}
+
+#linegraph-section {
+    visibility: hidden;
+}
+
+#guess-section {
+    justify-content: center;
+    text-align: center;
 }
