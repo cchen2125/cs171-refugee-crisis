@@ -90,3 +90,7 @@ body {
     justify-content: center;
     text-align: center;
 }
+
+#answer {
+    color: #8D2400;
+}
