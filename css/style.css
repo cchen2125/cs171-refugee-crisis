@@ -1,16 +1,13 @@
 body {
-    font-family: 'Libre Franklin', serif;
-}
-
-.row {
-    padding: 5px
+    font-family: 'Lato', sans-serif;
+    margin:0;
+    padding:0;
 }
 
 .tooltip {
     background-color: white;
     padding: 10px;
     border-radius: 10px;
-    font-family: 'Libre Franklin', serif;
     font-size: 14px;
     opacity: .9;
   }
@@ -73,4 +70,13 @@ body {
 #guess-button {
     background: rgb(239, 226, 207);
     border-radius: 5px;
+}
+
+#heading {
+    height: 100vh;
+    background-color: #B85C38;
+    color: #F1DEC9;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
