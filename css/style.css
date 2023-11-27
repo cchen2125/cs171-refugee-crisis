@@ -2,6 +2,7 @@ body {
     font-family: 'Lato', sans-serif;
     margin:0;
     padding:0;
+    text-align: center;
 }
 
 .tooltip {
@@ -67,19 +68,27 @@ body {
     background: maroon;
 }
 
-#guess-button {
-    background: rgb(239, 226, 207);
-    border-radius: 5px;
-}
 
 #heading {
+    text-align: center;
+}
+
+.heading2 {
     height: 100vh;
-    background-color: #B85C38;
-    color: #F1DEC9;
+    background-color: #F1DEC9;
+    color: #2D2424;
     display:flex;
     justify-content: center;
     align-items: center;
-    text-align:center;
+}
+
+#heading2 {
+    text-align: center;
+}
+
+#guess-button {
+    background: rgb(239, 226, 207);
+    border-radius: 5px;
 }
 
 #linegraph-section {
@@ -93,4 +102,19 @@ body {
 
 #answer {
     color: #8D2400;
+}
+
+.gdp-transition {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.map-page {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.sources {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
 }
