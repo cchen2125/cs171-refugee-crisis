@@ -54,8 +54,9 @@ function checkAnswer() {
         } else {
             document.getElementById("answer").innerHTML = "<h4>Incorrect! Below is a more comprehensive look at where refugees come from</h4>"
         }
-    
         document.getElementById("linegraph-section").style.visibility = "visible";
+        document.getElementById("temp-text").style.display = "none";
+        
     }
 }
 

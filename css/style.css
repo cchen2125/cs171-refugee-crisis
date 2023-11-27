@@ -126,3 +126,9 @@ body {
     margin-top: 10vh;
     margin-bottom: 10vh;
 }
+
+#temp-text {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
