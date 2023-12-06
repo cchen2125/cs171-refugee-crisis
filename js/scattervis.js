@@ -246,7 +246,7 @@ class ScatterVis {
 
         // Append circles to the merged selection 
         dots.append("circle")
-            .attr("fill-opacity", 0.6)
+            .attr("fill-opacity", 1)
             .attr("fill", 'orange')
             .attr("class", "dot")
             .attr("r", d => vis.z(d[1].recognizedDecisions));

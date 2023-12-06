@@ -14,6 +14,12 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.css" integrity="sha512-DGB74Gyw93qON+V0QxSRs1er6sqoPyFoy23HBL5LN7MRJBcjeCU22zega+vOEGE0XQLoVrv4ExcaesSTwZQA2w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
+    <!-- fullpage.js css -->
+    <link rel="stylesheet" type="text/css" href="css/fullpage/fullpage.css" />
+
+    <!-- AOS css -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/aos-delays.css">
 
     <!-- Custom CSS code -->
     <link rel="stylesheet" href="css/style.css">
@@ -21,48 +27,93 @@
 
 <body>
 
-<div class="container">
+<div id="fullPage">
 
-    <div class="row">
-        <div class="col-md-12">
-            <h1 id="heading">What do you know about refugees in our world?</h1>
+    <div class="section style1">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Title</h1>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Where is the home country of the most refugees right now?</h3>
+    <div class="section style1">
+        <h1 class="slide-text">
+            <span>
+                In 2022, one of every 74 people on the planet were living displaced from their home, due to conflict, persecution, or violence. Over 108 million people.
+            </span>
+        </h1>
+    </div>
+
+    <div class="section style2">
+        <h1 class="slide-text">
+            <span>
+                What do you know about refugees and displaced peoples in our world? And can you do anything about it? Let's find out.
+            </span>
+            <span>
+                Let's find out.
+            </span>
+        </h1>
+    </div>
+
+    <div class="section style1">
+        <h1 class="slide-text">
+            <span>
+                Where is the home country of the most refugees right now?
+            </span>
             <div class="form-group">
                 <input type="text" id="guess" placeholder="Country">
                 <button type="submit"  id="guess-button" onclick="checkAnswer()">Submit</button>
             </div>
-            
+        </h1>
+    </div>
+
+    <div class="section style2 container-fluid">
+        <h1 class="slide-text">
+            <span>
+                Actually, it's Syria.
+            </span>
+        </h1>
+        <div class="row">
+            <div class="col-md-8" id="linevis"></div>
+            <div class="col-md-4">
+                <p>Here are the home countries of refugees since 2018.</p>
+                <p>The Syrian civil war has been going on for over 10 years, and has displaced over 6.7 million people.</p>
+                <p>The number of Syrian refugees has been the highest every year since 2018. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines.</p>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="linevis"></div>
-            </div>
+    <div class="section style2 container-fluid">
+        <div class="col-md-12">
+            <h2>Which country accepts the most applications from asylum seekers?</h2>
         </div>
-        <p>The number of Syrian refugees has been the highest every year since 2018. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines. [images of news clippings]</p>
     </div>
 
-    <div class="row">
-        <h3>Which countries accept the most applications from asylum seekers?</h3>
+    <div class="section style2 container-fluid">
+        <h1 class="slide-text">
+            <span>
+                Actually, it's Germany.
+            </span>
+        </h1>
         <div class="row">
-            <div class="col-md-12">
-                <div id="bubblevis"></div>
+            <div class="col-md-8" id="bubblevis"></div>
+            <div class="col-md-4">
+                <p>Here are the home countries of refugees since 2018.</p>
             </div>
         </div>
-        <p>This might be surprising, because here’s how their asylum acceptances compare with their GDP</p>
-        <div class="row">
+    </div>
+
+    <div class="section style2 container-fluid">
+        <div class="row gdp-transition">
+        </div>
+        <h3 class="gdp-transition">This might be surprising, because here’s how their asylum acceptances compare with their GDP:</h3>
+        <div class="row gdp-transition">
             <div class="col-md-12">
                 <div id="scattervis"></div>
             </div>
-            <div class="col-4">
-                <p>Toggle to see more relationships with asylum acceptances:</p>
+            <div class="col-md-12">
+                <h4>Toggle to see more relationships with asylum acceptances:</h4>
                 <select id="select-box" class="form-control rounded" onchange="categoryChange()">
                     <option value="gdp">GDP (in USD)</option>
                     <option value="growth">GDP Growth (Annual %)</option>
@@ -74,41 +125,51 @@
         </div>
     </div>
 
-    <div class="row">
-        <h3>Explore the map for yourself</h3>
-        <div class="row">
-            <div class="btn-group col-auto">
-                <a class="btn btn-primary map-button active" onclick="activateButton(this)">Country of origin</a>
-                <a class="btn btn-primary map-button" onclick="activateButton(this)">Country of asylum</a>
-            </div>
-            <div class="col-auto">
-                <div class="form-group">
-                    <select class="form-control" id="attribute" onchange="updateMap()">
-                        <option value="Refugees under UNHCR's mandate">Refugees under UNHCR's mandate</option>
-                        <option value="IDPs of concern to UNHCR">IDPs of concern to UNHCR</option>
-                        <option value="Others of concern">Others of concern</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-auto">
-                <div class="range-slider-value"></div>
-            </div>
-            <div class="col-auto">
-                <div id="time-period-slider"></div>
-            </div>
-            <div class="col-auto">
-                <div class="range-slider-value"></div> 
-            </div>
-        </div>
+    <div class="section style2 container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div id="mapvis"></div>
+                <h2>Explore the map for yourself:</h2>
             </div>
         </div>
     </div>
-    <div class="row">
+
+    <div class="section style2 container-fluid">
+        <div class="row map-page">
+            <div class="row">
+                <div class="btn-group col-auto">
+                    <a class="btn btn-primary map-button active" onclick="activateButton(this)">Country of origin</a>
+                    <a class="btn btn-primary map-button" onclick="activateButton(this)">Country of asylum</a>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <select class="form-control" id="attribute" onchange="updateMap()">
+                            <option value="Refugees under UNHCR's mandate">Refugees under UNHCR's mandate</option>
+                            <option value="IDPs of concern to UNHCR">IDPs of concern to UNHCR</option>
+                            <option value="Others of concern">Others of concern</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <div class="range-slider-value"></div>
+                </div>
+                <div class="col-auto">
+                    <div id="time-period-slider"></div>
+                </div>
+                <div class="col-auto">
+                    <div class="range-slider-value"></div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="mapvis"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section style2 container-fluid">
         <h3>
             Sources
         </h3>
@@ -138,6 +199,25 @@
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
 
+<!-- fullpage.js -->
+<script type="text/javascript" src="js/fullpage/fullpage.js"></script>
+
+<script>
+    new fullpage('#fullPage', {
+        licenseKey: 'gplv3-license',
+        autoScrolling: true,
+        navigation: true,
+        anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10"],
+        navigationTooltips: ['Home', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    });
+</script>
+
+<!--Animate On Scroll -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    AOS.init();
+</script>
 
 <!-- Visualization objects -->
 <script src="js/mapvis.js"></script>

@@ -16,8 +16,8 @@ class BubbleVis {
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
-            .attr("width", vis.width)
-            .attr("height", vis.height)
+            .attr("width", vis.width + vis.margin.left + vis.margin.right)
+            .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
             .append("g")
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
 

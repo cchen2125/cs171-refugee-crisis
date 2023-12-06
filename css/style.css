@@ -2,6 +2,11 @@ body {
     font-family: 'Lato', sans-serif;
     margin:0;
     padding:0;
+    text-align: center;
+}
+
+.container-fluid {
+    padding: 5vw;
 }
 
 .tooltip {
@@ -17,7 +22,9 @@ body {
 }
 
 #bubblevis {
-    height: 110vh;
+    width: 60vw;
+    height: 60vh;
+    z-index: 10000000;
 }
 
 #bubbletext {
@@ -72,11 +79,46 @@ body {
     border-radius: 5px;
 }
 
-#heading {
-    height: 100vh;
+.style1 {
     background-color: #B85C38;
+    background-size: cover;
     color: #F1DEC9;
     display:flex;
     justify-content: center;
     align-items: center;
+}
+
+.style2 {
+    height: 100vh;
+    background-color: #F1DEC9;
+    color: #2D2424;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fp-viewing-section2 {
+    background-color: #F1DEC9;
+    color: #2D2424;
+}
+
+.gdp-transition {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.map-page {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.sources {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.slide-text {
+    max-width: 60vw;
+    margin: auto;
+    font-size: 1.5em;
 }
