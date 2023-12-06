@@ -64,7 +64,7 @@ class ScatterVis {
 
         // Add a scale for bubble size
         vis.z = d3.scaleSqrt()
-            .range([4, 60]);
+            .range([4, 40]);
 
         // Add a scale for bubble color
         // vis.myColor = d3.scaleOrdinal()
