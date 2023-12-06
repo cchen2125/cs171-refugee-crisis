@@ -7,6 +7,7 @@ body {
 
 .container-fluid {
     padding: 5vw;
+    text-align: center;
 }
 
 .tooltip {
@@ -83,6 +84,62 @@ body {
     background-color: #B85C38;
     background-size: cover;
     color: #F1DEC9;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#heading {
+    text-align: center;
+}
+
+.heading2 {
+    height: 100vh;
+    background-color: #F1DEC9;
+    color: #2D2424;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#heading2 {
+    text-align: center;
+}
+
+#guess-button {
+    background: rgb(239, 226, 207);
+    border-radius: 5px;
+}
+
+#linegraph-section {
+    visibility: hidden;
+}
+
+#guess-section {
+    justify-content: center;
+    text-align: center;
+}
+
+#answer {
+    color: #8D2400;
+}
+
+.gdp-transition {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.map-page {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.sources {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+#temp-text {
     display:flex;
     justify-content: center;
     align-items: center;
