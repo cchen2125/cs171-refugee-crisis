@@ -89,23 +89,6 @@ body {
     align-items: center;
 }
 
-#heading {
-    text-align: center;
-}
-
-.heading2 {
-    height: 100vh;
-    background-color: #F1DEC9;
-    color: #2D2424;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#heading2 {
-    text-align: center;
-}
-
 #guess-button {
     background: rgb(239, 226, 207);
     border-radius: 5px;
