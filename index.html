@@ -29,28 +29,43 @@
 
     <div id="fullPage">
 
-        <div class="section style1">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Title</h1>
+        <div class="section">
+            <video id="video" loop muted data-autoplay playsinline>
+                <source src="img/title.mp4" type="video/mp4">
+            </video>
+            <div class="layer">
+                <div class="box">
+                    <h1>Mapping the Refugee Crisis</h1>
                 </div>
-            </div>
+            </div>    
         </div>
    
         <div class="section style1">
             <h1 class="slide-text">
                 <span>
-                    In 2022, one of every 74 people on the planet were living displaced from their home, due to conflict, persecution, or violence. Over 108 million people.
+                    In 2022, over 108 million people were living displaced from their home, due to conflict, persecution, or violence. 
                 </span>
+                <br>
+                <br>
+                <div data-aos="fade-up" data-aos-delay="1000">
+                    <span>
+                        That's 1 of every 74 people on our planet.
+                    </span>
+                    <img id="visual" src="img/visual.png"/>
+                </div>
             </h1>
         </div>
    
         <div class="section style2">
             <h1 class="slide-text">
                 <span>
-                    What do you know about refugees and displaced peoples in our world? And can you do anything about it? 
+                    What do you know about refugees and displaced peoples in our world?  
                 </span>
-                <span>
+                <br>
+                <span>And can you do anything about it?</span>
+                <br>
+                <br>
+                <span data-aos="fade-up" data-aos-delay="1500">
                     Let's find out.
                 </span>
             </h1>
@@ -59,7 +74,7 @@
         <div class="section style1">
             <h1 class="slide-text">
                 <span>
-                    Where is the home country of the most refugees right now?
+                    Take your best guess: where is the home country of the most refugees right now?
                 </span>
             </h1>
             <div class="form-group">
@@ -97,7 +112,14 @@
         </div>
    
         <div class="section style2">
-            <h2>Which countries accept the most applications from asylum seekers?</h2>
+            <h1 class="slide-text">
+                <span>
+                    What about this:
+                </span>
+                <br>
+                <br>
+                <span data-aos="fade-up" data-aos-delay="500">Which country accepts the most applications from asylum seekers?</span>
+            </h1>
         </div>
 
         <div class="section style2">
@@ -106,16 +128,18 @@
                     Actually, it's Germany.
                 </span>
             </h1>
-            <div class="row">
-                <div class="col-md-8" id="bubblevis"></div>
-                <div class="col-md-4">
+            <div class="row" data-aos="fade-up" data-aos-delay="800">
+                <div class="col-7">
+                    <div id="bubblevis"></div>
+                </div>
+                <div class="col-4">
                     <p>Here are the home countries of refugees since 2018.</p>
                 </div>
             </div>
         </div>
    
         <div class="section style2">
-            <h3 class="gdp-transition">This might be surprising, because here’s how their asylum acceptances compare with their GDP:</h3>
+            <h3>This might be surprising, because here’s how their asylum acceptances compare with their GDP:</h3>
             <div class="col-md-12">
                 <div id="scattervis"></div>
             </div>
@@ -210,6 +234,14 @@
         navigation: true,
         anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10"],
         navigationTooltips: ['Home', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        css3: false,
+        afterLoad: function (origin, destination, direction, trigger) {
+            // Necessary for AOS to work:
+            // https://github.com/michalsnik/aos/issues/490
+            document.querySelectorAll('.fp-table.active .aos-init').forEach((el) => {
+                el.classList.add('aos-animate')
+            })
+        },
     });
 </script>
 

@@ -10,18 +10,17 @@ class BubbleVis {
     initVis() {
         let vis= this;
 
-        vis.margin = {top: 10, right: 20, bottom: 30, left: 20};
-        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+        vis.margin = {top: 10, right: 0, bottom: 0, left: 0};
+        vis.width = 600;
+        vis.height = 600;
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
             .attr("width", vis.width + vis.margin.left + vis.margin.right)
             .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
-            .append("g")
-            .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
+            .append("g");
 
-        // scale
+        // Scale
         vis.scale = d3.scaleLinear()
             .range([0, 100]);
 
@@ -48,15 +47,15 @@ class BubbleVis {
                 .html(`<strong>${d.data.country}</strong>
                 <br>Recognized Asylum Decisions: ${d3.format(",")(d.data.recognizedDecisions)}
                 <br>Total Asylum Decisions: ${d3.format(",")(d.data.totalDecisions)}
-                <br>Percentage Recognized: ${d.data.percentageRecognized}%`)
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY + 10) + "px");
+                <br><br>Recognized: <strong>${d.data.percentageRecognized}%</strong>`)
+                    .style("left", (event.pageX + 20) + "px")
+                    .style("top", (event.pageY - 30) + "px");
         };
         
         vis.moveTooltip = function(event, d, context) {
             vis.tooltip
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY + 10) + "px");
+                .style("left", (event.pageX + 20) + "px")
+                .style("top", (event.pageY - 30) + "px");
         };
         
         vis.hideTooltip = function(event, d, context) {
@@ -160,40 +159,13 @@ class BubbleVis {
             .attr("fill", 'orange') 
             .attr("r", d => Math.sqrt(d.data.recognizedDecisions / d.data.totalDecisions) * d.r);
 
-        // Function to wrap text within a specified width
-        function wrap(text, width) {
-            console.log(text, width)
-            text.each(function () {
-                var text = d3.select(this),
-                    words = text.text().split(/\s+/).reverse(),
-                    word,
-                    line = [],
-                    lineNumber = 0,
-                    lineHeight = 1.1, // ems
-                    y = text.attr("y"),
-                    dy = parseFloat(text.attr("dy")) || 0,
-                    tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-                while (word = words.pop()) {
-                    line.push(word);
-                    tspan.text(line.join(" "));
-                    if (tspan.node().getComputedTextLength() > width) {
-                        line.pop();
-                        tspan.text(line.join(" "));
-                        line = [word];
-                        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-                    }
-                }
-            });
-        }
-
         // Add text.
         node.append("text")
             .text(d => d.data.country)
             .attr("text-anchor", "middle")
             .attr("dy", "0.35em")
-            .style('id', "bubble-text")
-            .call(wrap, d => d.r/3);
-
-        // Update / remove sequence
+            .attr("text-anchor", "middle")
+            .style("font-size", "12px")
+            .style("pointer-events", "none");
     }
 }

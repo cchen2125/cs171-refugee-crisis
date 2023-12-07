@@ -11,26 +11,54 @@ body {
 }
 
 .tooltip {
+    border: thin solid black;
     background-color: white;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 14px;
+}
+
+#video{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top:0;
+    width: 100%;
+    height: 100vh;
+    background-color: #EFE9E9; 
+    background-position: center center;
+    background-size: contain;
+    object-fit: cover; 
+    z-index:3;
+}
+
+.layer {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    top: 35%;
+    left: 15%;
+}
+
+.box {
+    top: 50%;
+    left: 50%;
+    max-width: 1000px;
+    max-height: 680px;
+    padding: 50px;
+    background: #fff;
     opacity: .9;
-  }
+    border: thin solid black;
+    border-radius: 10px;
+}
 
 #linevis {
     height: 75vh;
 }
 
-#bubblevis {
-    width: 60vw;
-    height: 60vh;
-    z-index: 10000000;
-}
-
 #bubbletext {
     fill: black;
-    font-size: 13px;
+    font-size: 8px;
     font-weight: normal;
     pointer-events: none;
 }
@@ -137,14 +165,9 @@ body {
     align-items: center;
 }
 
-.fp-viewing-section2 {
-    background-color: #F1DEC9;
-    color: #2D2424;
-}
-
-.gdp-transition {
-    margin-top: 10vh;
-    margin-bottom: 10vh;
+#visual {
+    margin-top: 2.5vw;
+    height: 14vw;
 }
 
 .map-page {
