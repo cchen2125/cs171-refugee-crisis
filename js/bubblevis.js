@@ -47,7 +47,7 @@ class BubbleVis {
                 .html(`<strong>${d.data.country}</strong>
                 <br>Recognized Asylum Decisions: ${d3.format(",")(d.data.recognizedDecisions)}
                 <br>Total Asylum Decisions: ${d3.format(",")(d.data.totalDecisions)}
-                <br><br>Recognized: <strong>${d.data.percentageRecognized}%</strong>`)
+                <br><br>Percentage: <strong>${d.data.percentageRecognized}%</strong>`)
                     .style("left", (event.pageX + 20) + "px")
                     .style("top", (event.pageY - 30) + "px");
         };

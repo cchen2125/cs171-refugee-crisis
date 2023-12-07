@@ -10,6 +10,12 @@ body {
     text-align: center;
 }
 
+
+.section {
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+}
+
 .tooltip {
     border: thin solid black;
     background-color: white;
@@ -74,7 +80,12 @@ body {
 }
 
 #scattervis {
-    height: 100vh;
+    height: 80vh;
+    margin-left: 3vw;
+}
+
+#scattervis2 {
+    height: 80vh;
 }
 
 #mapvis {
