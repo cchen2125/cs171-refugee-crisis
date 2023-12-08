@@ -10,7 +10,7 @@ class LineVis {
     initVis() {
         let vis=this;
 
-        vis.margin = { top: 30, right: 175, bottom: 30, left: 70 };
+        vis.margin = { top: 30, right: 180, bottom: 30, left: 60 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
@@ -47,24 +47,30 @@ class LineVis {
             .attr("class", "y-axis-label")
             .attr("x", -vis.margin.left)
             .attr("y", -5)
-            .attr("fill", "gray")
+            .attr("fill", "white")
             .attr("font-size", 15)
-            .text("Refugees Under UNHCR Mandate")
+            .text("Refugees Under UNHCR Mandate*")
 
         vis.svg.append("text")
             .attr("class", "x-axis-label")
             .attr("x", vis.width+10)
             .attr("y", vis.height+5)
-            .attr("fill", "gray")
+            .attr("fill", "white")
             .attr("font-size", 15)
             .text("Year")
 
         // Color scale setup
-        vis.highlight = ["Afghanistan", "Syria", "Ukraine", "Myanmar", "S. Sudan"]
+        vis.highlight = ["Syria", "Afghanistan", "Ukraine", "S. Sudan", "Myanmar"]
 
         vis.color = d3.scaleOrdinal()
             .range(d3.schemeTableau10)
             .domain(vis.highlight)
+
+        // add tooltip
+        vis.tooltip = d3.select("body").append('div')
+            .style("opacity", 0)
+            .attr('class', "tooltip")
+            .attr('id', 'lineTooltip');
 
         vis.wrangleData();
     }
@@ -73,6 +79,7 @@ class LineVis {
         let vis=this;
 
         vis.parseTime = d3.timeParse("%Y")
+        vis.formatDate = d3.timeFormat("%Y");
         
         vis.data.forEach(function(d) {
             d.Year = vis.parseTime(d.Year);
@@ -182,13 +189,33 @@ class LineVis {
         vis.circles.enter()
             .append("circle")
             .merge(vis.circles)
+            .on("mouseover", function(event, d) {
+                let tooltipHTML = `<div>
+                    <strong>${d.country}</strong>
+                    <br>Year: ${vis.formatDate(d.year)}
+                    <br>Number of Refugees: ${d3.format(",")(d.refugees)}
+                </div>`
+
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(tooltipHTML);
+            })
+            .on("mouseout", function(event, d) {
+                vis.tooltip
+                    .style("opacity", 0)
+                    .style("left", 0)
+                    .style("top", 0)
+                    .html("");
+            })
             .transition()
             .duration(800)
             .attr("cx", d=>vis.x(d.year))
             .attr("cy", d=>vis.y(d.refugees))
             .attr("r", (d) => {
                 if (vis.highlight.includes(d.country)) {
-                    return 5
+                    return 6
                 }
                 else {
                     return 3
@@ -210,6 +237,8 @@ class LineVis {
                     return 0.5
                 }
             })
+            .attr("cursor", "pointer")
+            
         
         // draw legend
         let rectWidth = 20
@@ -231,6 +260,7 @@ class LineVis {
             .attr("class", "legend-label")
             .attr("x", vis.width+rectWidth+25)
             .attr("y", (d, i) => {return i*30+rectWidth / 2+5})
+            .attr("fill", 'white')
             .text(d=> d)
         
     }

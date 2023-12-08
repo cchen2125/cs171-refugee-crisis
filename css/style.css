@@ -19,7 +19,8 @@ body {
   }
 
 #linevis {
-    height: 75vh;
+    height: 60vh;
+    width: 75vw;
 }
 
 #bubblevis {
@@ -91,20 +92,19 @@ body {
 
 #guess-button {
     background: rgb(239, 226, 207);
+    border-color: #2D2424;
     border-radius: 5px;
 }
 
 #linegraph-section {
     visibility: hidden;
+    justify-content: center;
 }
 
-#guess-section {
+.guess-section {
     justify-content: center;
     text-align: center;
-}
-
-#answer {
-    color: #8D2400;
+    padding: 1em;
 }
 
 .gdp-transition {
@@ -113,8 +113,9 @@ body {
 }
 
 .map-page {
-    margin-top: 10vh;
-    margin-bottom: 10vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    width: 80vw;
 }
 
 .sources {
@@ -147,11 +148,6 @@ body {
     margin-bottom: 10vh;
 }
 
-.map-page {
-    margin-top: 10vh;
-    margin-bottom: 10vh;
-}
-
 .sources {
     margin-top: 10vh;
     margin-bottom: 10vh;
@@ -161,4 +157,14 @@ body {
     max-width: 60vw;
     margin: auto;
     font-size: 1.5em;
+}
+
+#map-filters {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-filter {
+    padding-top: 1em;
 }

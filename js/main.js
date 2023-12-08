@@ -29,6 +29,10 @@ function initMainPage(allDataArray) {
     // log data
     console.log(allDataArray);
 
+    // populate select box
+    countries = [...new Set(allDataArray[2].map(d=> {return d["Country of origin"]}))]
+    addOptions(document.getElementById("guess"), countries)
+
     // initialize new visualizations
     myLineVis = new LineVis("linevis", allDataArray[2])
 
@@ -40,23 +44,40 @@ function initMainPage(allDataArray) {
     makeSlider()
 }
 
+// function for populating select box options
+function addOptions(selectbox, options) {
+    options.sort()
+
+    options.forEach(value => {
+        let option = document.createElement("option")
+        option.text = value
+        option.value = value
+
+        selectbox.appendChild(option)
+    })
+}
+
+// function for checking user's guess
 function checkAnswer() {
     let guess = document.getElementById("guess").value
-    let close_answers = ["afghanistan", "ukraine"]
+    let close_answers = ["Afghanistan", "Ukraine"]
 
     if (guess == "") {
-        document.getElementById("answer").innerHTML = "Please submit an answer"
+        document.getElementById("warning").innerHTML = "Please submit an answer"
     } else {
-        if (guess.toLowerCase() == "syria") {
-            document.getElementById("answer").innerHTML = "<h4>Correct! Below is a more comprehensive look at where refugees come from</h4>"
-        } else if (close_answers.includes(guess.toLowerCase())) {
-            document.getElementById("answer").innerHTML = "<h4>Close! Below is a more comprehensive look at where refugees come from</h4>"
+        if (guess == "Syria") {
+            document.getElementById("answer").innerHTML = "<h1 class='slide-text'>It is actually Syria.</h1>"
+        } else if (close_answers.includes(guess)) {
+            document.getElementById("answer").innerHTML = "<h1 class='slide-text'>Close. It's actually Syria.</h1>"
         } else {
-            document.getElementById("answer").innerHTML = "<h4>Incorrect! Below is a more comprehensive look at where refugees come from</h4>"
+            document.getElementById("answer").innerHTML = "<h1 class='slide-text'> Actually, it's Syria.</h1>"
         }
+        document.getElementById("answer").innerHTML += "<p>Below is a more comprehensive look at where refugees have been coming from over time. Hover over the points for detailed values.<p>"
         document.getElementById("linegraph-section").style.visibility = "visible";
         document.getElementById("temp-text").style.display = "none";
-        
+
+        newsection = parseInt(location.href.slice(location.href.length - 1, location.href.length)) + 1
+        location.href = location.href.slice(0, location.href.length - 1) + newsection  
     }
 }
 

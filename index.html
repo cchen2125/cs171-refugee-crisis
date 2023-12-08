@@ -59,36 +59,39 @@
         <div class="section style1">
             <h1 class="slide-text">
                 <span>
-                    Where is the home country of the most refugees right now?
+                    Where was the home country of the most refugees this year?
                 </span>
             </h1>
-            <div class="form-group">
-                <input type="text" id="guess" placeholder="Country">
-                <button type="submit"  id="guess-button" onclick="checkAnswer()">Submit</button>
+            <div class="row form-group guess-section">
+                <div class="col-auto">
+                    <select class="form-control" id="guess" placeholder="Country">
+                        <option value="" disabled selected>Country</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button class="btn" type="submit" id="guess-button" onclick="checkAnswer()">Submit</button>
+                </div>
             </div>
-                <div class="row">
-                    <div id="answer"></div>
-                </div>
-                <div class="row" id="temp-text">
-                    <h3>Submit an answer above to see the line graph</h3>
-                </div>
+            <div class="row">
+                <div id="warning"></div>
+            </div>
+        </div>
+
+        <div class="section style1">
+            <div class="row" id="answer"></div>
+            <div class="row" id="temp-text">
+                <h1 class="slide-text">Submit an answer above to see the line graph</h1>
+            </div>
            
-                <div class="row" id="linegraph-section">
-                    <div class="row">
-                        <div class="col-md-8" id="linevis"></div>
-                        <div class="col-md-4">
-                        <h1 class="slide-text">
-                    </div>
+            <div class="row" id="linegraph-section">
+                <div class="row" id="linevis"></div>
+                <div class="row" style="width: 75vw">
+                    <p>*The United Nations High Commissioner for Refugees (UNHCR) is a UN agency dedicated to international action to protect refugees, forcibly displaced communities, and stateless people. When a refugee is under the mandate of the UNHCR, it means they are recognized by the UNHCR as someone who has fled their home country due to a well-founded fear of persecution, conflict, violence, or other threats to their safety or human rights. Being under the UNHCR mandate grants certain protections and services such as legal assistance, education, and housing.</p>
                 </div>
             </div>
         </div>
-   
+
         <div class="section style2 container-fluid">
-            <h1 class="slide-text">
-                <span>
-                    Actually, it's Syria.
-                </span>
-            </h1>
             <div class="row">
                 <div class="col-md-12 heading">
                     <h2>The number of Syrian refugees has been the highest every year since 2018. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines.</h2>
@@ -138,12 +141,12 @@
                 </div>
             </div>
             <div class="row map-page">
-                <div class="row">
-                    <div class="btn-group col-auto">
+                <div class="row" id="map-filters">
+                    <div class="btn-group col-auto map-filter">
                         <a class="btn btn-primary map-button active" onclick="activateButton(this)">Country of origin</a>
                         <a class="btn btn-primary map-button" onclick="activateButton(this)">Country of asylum</a>
                     </div>
-                    <div class="col-auto">
+                    <div class="col-auto map-filter">
                         <div class="form-group">
                             <select class="form-control" id="attribute" onchange="updateMap()">
                                 <option value="Refugees under UNHCR's mandate">Refugees under UNHCR's mandate</option>
@@ -152,15 +155,9 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-auto">
+                    <div class="col-auto map-filter">
                         <div class="range-slider-value"></div>
-                    </div>
-                    <div class="col-auto">
                         <div id="time-period-slider"></div>
-                    </div>
-                    <div class="col-auto">
                         <div class="range-slider-value"></div> 
                     </div>
                 </div>
@@ -209,7 +206,7 @@
         autoScrolling: true,
         navigation: true,
         anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10"],
-        navigationTooltips: ['Home', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        navigationTooltips: ['Title', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     });
 </script>
 
