@@ -89,10 +89,6 @@ body {
     height: 80vh;
 }
 
-#mapvis {
-    padding-bottom: 5vh;
-}
-
 #time-period-slider {
     width: 100px;
     display: inline-block;
@@ -154,7 +150,7 @@ body {
 .map-page {
     margin-top: 5vh;
     margin-bottom: 5vh;
-    width: 80vw;
+    width: 90vw;
 }
 
 .sources {
@@ -201,4 +197,8 @@ body {
 
 .map-filter {
     padding-top: 1em;
+}
+
+.map-legend-label {
+    font-size: 0.8em;
 }

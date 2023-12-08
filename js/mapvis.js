@@ -33,10 +33,10 @@ class MapVis {
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
 
         // draw background
-        vis.svg.append("rect")
-            .attr("width", vis.width)
-            .attr("height", vis.height)
-            .attr("fill", "#ADDEFF")
+        //vis.svg.append("rect")
+        //    .attr("width", vis.width)
+        //    .attr("height", vis.height)
+        //    .attr("fill", "#ADDEFF")
 
         // add title
         /*vis.svg.append('g')
@@ -84,7 +84,7 @@ class MapVis {
         // Create a legend group and position it
         vis.legend = vis.svg.append("g")
             .attr('class', 'legend')
-            .attr('transform', `translate(${vis.width / 30}, ${vis.height *0.9})`);
+            .attr('transform', `translate(${vis.width / 50}, ${vis.height *0.9})`);
 
         // legend scale
         vis.legendScale = d3.scaleLinear()
@@ -95,6 +95,9 @@ class MapVis {
         vis.legendAxisGroup = vis.legend.append('g')
             .attr('class', 'legend-axis')
             .attr('transform', 'translate(0,'+vis.height / 30 +')');
+
+        // legend label
+        vis.legendLabel = vis.legend.append("text").attr("class", "map-legend-label").attr("y", -vis.height / 50)
 
         // Create a linear gradient definition in the <defs> section
         vis.defs = vis.legend.append("defs");
@@ -157,6 +160,12 @@ class MapVis {
             }
         })
 
+        vis.countryInfo = {}
+
+        Array.from(d3.group(vis.filteredData, d=>d[vis.selected_cat])).forEach(d=>{
+            vis.countryInfo[d[0]] = d[1]
+        })
+
         vis.updateVis()
     }
 
@@ -176,7 +185,8 @@ class MapVis {
                     return vis.colorScale(Math.log(vis.displayData[d.properties.name].value) / Math.log(10))
                 } else {
                     return "lightgray"
-                }});
+                }})
+            .attr("cursor", "pointer");
             
 
         // legend axis
@@ -184,6 +194,9 @@ class MapVis {
 
         // legend axis group and call
         vis.legendAxisGroup.call(vis.legendAxis);
+
+        // legend label
+        vis.legendLabel.text(vis.selected_val)
 
         // Tooltip listener
         vis.countries
@@ -197,13 +210,13 @@ class MapVis {
                 
                 if (Object.keys(vis.displayData).includes(d.properties.name)) {
                     tooltipHTML =  `<div>
-                    <h3>${d.properties.name}</h3>
-                    <h4>${d3.format(",")(vis.displayData[d.properties.name].value)}</h4>
+                    <strong>${d.properties.name}</strong>
+                    <br>${d3.format(",")(vis.displayData[d.properties.name].value)}
                 </div>`
                 } else {
                     tooltipHTML = `<div>
-                    <h3>${d.properties.name}</h3>
-                    <h4>N/A</h4>
+                    <strong>${d.properties.name}</strong>
+                    <br>N/A
                 </div>`
                 }
 
@@ -230,6 +243,26 @@ class MapVis {
                     .style("left", 0)
                     .style("top", 0)
                     .html("");
+            })
+            .on('click', function(event, d) {
+                d3.select('#country-info').html('').append('strong').text(vis.selected_cat + ": " + d.properties.name)
+
+                let countryData = vis.countryInfo[d.properties.name]
+
+                let selectedData = d3.rollup(countryData, v => d3.sum(v, d=>d[vis.selected_val]), d=>d[vis.selected_cat])
+                let oppositeCatData = d3.rollup(countryData, v=>d3.sum(v, d=>d[vis.selected_val]), d=>d["Country of asylum"])
+
+                d3.select('#country-info')
+                    .append('p')
+                    .text(d3.rollup(countryData, v => d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d[vis.selected_cat]).get(d.properties.name) + " refugees under UNHCR's mandate")
+                
+                d3.select('#country-info')
+                    .append('p')
+                    .text(d3.rollup(countryData, v => d3.sum(v, d=>d["IDPs of concern to UNHCR"]), d=>d[vis.selected_cat]).get(d.properties.name) + " IDPs of concern to UNHCR")
+                
+                d3.select('#country-info')
+                    .append('p')
+                    .text(d3.rollup(countryData, v => d3.sum(v, d=>d["Others of concern"]), d=>d[vis.selected_cat]).get(d.properties.name) + " others of concern")
             });
     }
 }
