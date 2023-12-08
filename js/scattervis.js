@@ -11,9 +11,9 @@ class ScatterVis {
     initVis() {
         let vis = this;
 
-        vis.margin = {top: 40, right: 0, bottom: 10, left: 40};
-        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right + 50;
-        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+        vis.margin = {top: 40, right: 10, bottom: 10, left: 40};
+        vis.width = 900;
+        vis.height = 500;
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -66,11 +66,6 @@ class ScatterVis {
         vis.z = d3.scaleSqrt()
             .range([4, 40]);
 
-        // Add a scale for bubble color
-        // vis.myColor = d3.scaleOrdinal()
-        //     .domain(["Asia", "Europe", "Americas", "Africa", "Oceania"])
-        //     .range(d3.schemeSet1);
-
         // Create a tooltip div
         vis.tooltip = d3.select("body")
             .append("div")
@@ -90,14 +85,14 @@ class ScatterVis {
                 <br>GDP (2022): ${d[1].gdp} 
                 <br>Total Population (2022): ${d[1].population} 
                 <br>Recognized Asylum Decisions: ${d[1].recognizedDecisions}`)
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY + 10) + "px");
+                    .style("left", (event.pageX + 20) + "px")
+                    .style("top", (event.pageY - 30) + "px");
         };
         
         vis.moveTooltip = function(event, d, context) {
             vis.tooltip
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY + 10) + "px");
+                .style("left", (event.pageX + 20) + "px")
+                .style("top", (event.pageY - 30) + "px");
         };
         
         vis.hideTooltip = function(event, d, context) {
@@ -204,7 +199,7 @@ class ScatterVis {
         // Creating X scale
         vis.x = d3.scaleLinear()
             .domain([vis.min, vis.max])
-            .range([20, vis.width-60]);
+            .range([20, vis.width-70]);
 
         vis.svg.select(".x-axis")
             .call(d3.axisBottom(vis.x)

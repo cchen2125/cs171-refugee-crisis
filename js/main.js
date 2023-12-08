@@ -4,11 +4,6 @@ let myBubbleVis,
     myMapVis,
     myScatterVis;
 
-// function updateAllVisualizations(){
-//     myPieChart.wrangleData()
-//     myMapVis.wrangleData()
-// }
-
 // load data using promises
 let promises = [    
     d3.csv('data/asylum_applications.csv'),
