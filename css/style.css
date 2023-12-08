@@ -53,7 +53,7 @@ body {
     max-height: 680px;
     padding: 50px;
     background: #fff;
-    opacity: .9;
+    opacity: .75;
     border: thin solid black;
     border-radius: 10px;
 }
@@ -201,4 +201,15 @@ body {
 
 .map-legend-label {
     font-size: 0.8em;
+}
+
+.map-side-text {
+    color: maroon;
+    margin: 0;
+    text-align: left;
+}
+
+#resetButton {
+    background-color: #B85C38;
+    color:#F1DEC9;
 }

@@ -124,13 +124,61 @@ class MapVis {
             .attr("fill", "url(#gradient)")
 
         //TODO: drag and zoom
-        /*//create zoom handler
+        //create zoom handler
         vis.zoom = d3.zoom()
             .scaleExtent([1, 8])
             .on('zoom', (event) => {
-                vis.svg.selectAll('path')
+                vis.svg.selectAll('path.country')
                     .attr('transform', event.transform);
-            });*/
+            });
+            
+        vis.svg.call(vis.zoom)
+
+        d3.select("#resetButton").on("click", function() {
+            vis.svg.transition()
+              .duration(750)
+              .call(vis.zoom.transform, d3.zoomIdentity);
+          });
+        
+        // sidebar functionality
+        vis.selectedCountry = "none"
+        vis.updateSidebar = function(d) {
+            if (d == "none") {
+                return
+            }
+            if (!Object.keys(vis.displayData).includes(d.properties.name)) {
+                d3.select('#country-info').html('').append('strong').text(vis.selected_cat + ": " + d.properties.name)
+                return
+            }
+
+            d3.select('#country-info').html('').append('strong').text(vis.selected_cat + ": " + d.properties.name)
+        
+            let countryData = vis.countryInfo[d.properties.name]
+        
+            let infoList = d3.select('#country-info').append('ul')
+        
+            infoList.append('li')
+                .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " refugees under UNHCR's mandate")
+                .attr('class', 'map-side-text')
+            
+            infoList.append('li')
+                .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["IDPs of concern to UNHCR"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " IDPs of concern to UNHCR")
+                .attr('class', 'map-side-text')
+            
+            infoList.append('li')
+                .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["Others of concern"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " others of concern")
+                .attr('class', 'map-side-text')
+
+            d3.select('#country-info').append("p").text('')
+
+            if(vis.selected_cat == "Country of origin") {
+                d3.select('#country-info').append("p").text('TODO: Top 5 countries where refugees from this country are seeking asylum bar chart')
+                d3.select('#country-info').append("p").text('TODO: refugees from this country over time line chart')
+            } else if(vis.selected_cat == "Country of asylum") {
+                d3.select('#country-info').append("p").text('TODO: Top 5 countries where refugees seeking asylum from this country originate from bar chart')
+                d3.select('#country-info').append("p").text('TODO: rejected vs. accepted asylum applications from this country over time stacked bar chart')
+            }
+        }
 
         vis.wrangleData()
 
@@ -245,24 +293,10 @@ class MapVis {
                     .html("");
             })
             .on('click', function(event, d) {
-                d3.select('#country-info').html('').append('strong').text(vis.selected_cat + ": " + d.properties.name)
-
-                let countryData = vis.countryInfo[d.properties.name]
-
-                let selectedData = d3.rollup(countryData, v => d3.sum(v, d=>d[vis.selected_val]), d=>d[vis.selected_cat])
-                let oppositeCatData = d3.rollup(countryData, v=>d3.sum(v, d=>d[vis.selected_val]), d=>d["Country of asylum"])
-
-                d3.select('#country-info')
-                    .append('p')
-                    .text(d3.rollup(countryData, v => d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d[vis.selected_cat]).get(d.properties.name) + " refugees under UNHCR's mandate")
-                
-                d3.select('#country-info')
-                    .append('p')
-                    .text(d3.rollup(countryData, v => d3.sum(v, d=>d["IDPs of concern to UNHCR"]), d=>d[vis.selected_cat]).get(d.properties.name) + " IDPs of concern to UNHCR")
-                
-                d3.select('#country-info')
-                    .append('p')
-                    .text(d3.rollup(countryData, v => d3.sum(v, d=>d["Others of concern"]), d=>d[vis.selected_cat]).get(d.properties.name) + " others of concern")
+                vis.selectedCountry = d
+                vis.updateSidebar(vis.selectedCountry) 
             });
+
+        vis.updateSidebar(vis.selectedCountry)
     }
 }
