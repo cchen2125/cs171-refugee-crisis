@@ -8,6 +8,7 @@ class MapVis {
 
         console.log(geoData)
         console.log(refugeeData)
+        console.log(decisionData)
 
         this.initVis()
     }

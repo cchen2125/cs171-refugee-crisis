@@ -34,9 +34,8 @@
                 <source src="img/title.mp4" type="video/mp4">
             </video>
             <div class="layer">
-                <div class="box">
-                    <h1>Mapping the Refugee Crisis</h1>
-                </div>
+                <h1 id="title">Mapping the Refugee Crisis</h1>
+                <h1 id="subheading">A Data Journey</h1>
             </div>    
         </div>
    
@@ -60,16 +59,12 @@
             <h1 class="slide-text">
                 <div>
                     <span>
-                        This marks the largest ever single-year increase in forced displacement in UNHCR’s history.
+                        This marks the largest-ever single year increase in forced displacement in the history of the United Nations High Commissioner for Refugees.
                     </span>
                 </div>
                 <br>
                 <span data-aos="fade-up" data-aos-delay="1500">
-                    But what do you know about refugees and displaced peoples in our world?  
-                </span>
-                <br>
-                <span data-aos="fade-up" data-aos-delay="1500">
-                    And can you do anything about it?
+                    But have you heard about this in the news? What do you know about refugees and displaced peoples in our world?  
                 </span>
                 <br>
                 <br>
@@ -127,24 +122,53 @@
                 <span>
                     What about this:
                 </span>
-                <br>
-                <br>
-                <span data-aos="fade-up" data-aos-delay="500">Which country accepts the most applications from asylum seekers?</span>
             </h1>
+            <div data-aos="fade-up" data-aos-delay="500">
+                <h1 class="slide-text">
+                    <br>
+                    <span>Which country accepts the most applications from asylum seekers?</span>
+                </h1>
+                <div class="row form-group guess-section">
+                    <div class="col-auto">
+                        <select class="form-control" id="asylum-guess" placeholder="Country">
+                            <option value="" disabled selected>Country</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn" type="submit" id="asylum-guess-button" onclick="checkAnswerAsylum()">Submit</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="asylum-warning"></div>
+                </div>
+            </div>
         </div>
 
         <div class="section style2">
-            <h1 class="slide-text">
-                <span>
-                    Actually, it's Germany.
-                </span>
-            </h1>
+            <div class="row" id="asylum-answer"></div>
+            <div class="row" id="asylum-temp-text">
+                <h1 class="slide-text">Submit an answer above to see the chart</h1>
+            </div>
+            <div class="row" id="barchart-section">
+                <div class="col-7">
+                    <div id="barvis"></div>
+                </div>
+                <div class="col-3 explanation" data-aos="fade-up" data-aos-delay="400">
+                    <p>Keep scrolling to see more context on these asylum decisions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section style2">
             <div class="row" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-12">
+                    <h1 class="slide-text">Recognized asylum decisions out of total decisions</h1>
+                </div>
                 <div class="col-7">
                     <div id="bubblevis"></div>
                 </div>
-                <div class="col-4">
-                    <p>Here are the home countries of refugees since 2018.</p>
+                <div class="col-4 explanation">
+                    <p>Asylum decisions over period of UNHCR tracking</p>
                 </div>
             </div>
         </div>
@@ -287,6 +311,7 @@
 <script src="js/bubblevis.js"></script>
 <script src="js/linevis.js"></script>
 <script src="js/scattervis.js"></script>
+<script src="js/barvis.js"></script>
 
 <!-- Load data, create visualizations -->
 <script src="js/main.js"></script>
