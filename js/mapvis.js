@@ -154,7 +154,7 @@ class MapVis {
             .append('g')
             .attr('transform', `translate (${vis.sideMargin1.left}, ${vis.sideMargin1.top})`)
 
-        vis.sideMargin2 = {top: 10, right:10, bottom: 20, left:60}
+        vis.sideMargin2 = {top: 20, right:10, bottom: 20, left:60}
         vis.sideWidth2 = document.getElementById('side-graph2').getBoundingClientRect().width - vis.sideMargin2.left - vis.sideMargin2.right
         vis.sideHeight2 = document.getElementById('side-graph2').getBoundingClientRect().height - vis.sideMargin2.top - vis.sideMargin2.bottom
         vis.sideSvg2 = d3.select('#side-graph2').append('svg')
@@ -197,6 +197,8 @@ class MapVis {
             infoList.append('li')
                 .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["Others of concern"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " others of concern")
                 .attr('class', 'map-side-text')
+
+            vis.sideSvg2.selectAll(".asylum-legend").remove()
 
             // create graphs
             if(vis.selected_cat == "Country of origin") {
@@ -278,6 +280,7 @@ class MapVis {
                     
                 let vbar_xAxis = d3.axisBottom()
                     .scale(vbar_xScale)
+                    .tickValues(vbar_xScale.domain().filter(function(d,i){ return !(i%5)}))
                 
                 vis.sideSvg2.append("g")
                     .attr("class", "x-axis axis")
@@ -387,7 +390,7 @@ class MapVis {
                 d3.select('#side-title2').text(`Asylum applications and status in ${d.properties.name} over time`)
 
                 let countryCode = countryData[0]["Country of asylum (ISO)"]
-                let countryDecisions = vis.decisionData.filter(d=>{return (d["Country of asylum (ISO)"] == countryCode)})
+                let countryDecisions = vis.decisionData.filter(d=>{return (d["Country of asylum (ISO)"] == countryCode) && (vis.parseDate(d.Year) >= vis.min_date) && (vis.parseDate(d.Year) <= vis.max_date)})
 
                 console.log(countryDecisions)
 
@@ -395,8 +398,8 @@ class MapVis {
                 let totalByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Total decisions"]), d=>d.Year), ([year, value])=>({year, value}))
                 let acceptedByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Recognized decisions"]), d=>d.Year), ([year, value])=>({year, value}))
 
-                totalByYear.sort()
-                acceptedByYear.sort()
+                totalByYear.sort(function(a,b) {return vis.parseDate(a.year) - vis.parseDate(b.year)})
+                acceptedByYear.sort(function(a,b) {return vis.parseDate(a.year) - vis.parseDate(b.year)})
 
                 console.log(totalByYear)
 
@@ -469,6 +472,35 @@ class MapVis {
                     .attr("x", d => vbar_xScale(d.year))
                     .attr("y", d=>vbar_yScale(d.value))
                     .attr("fill", "#A9B388")
+                
+                vis.sideSvg2.append("rect")
+                    .attr("class", "asylum-legend")
+                    .attr("fill", "#A9B388")
+                    .attr("y", -15)
+                    .attr("x", 5)
+                    .attr("width", 15)
+                    .attr("height", 15)
+
+                vis.sideSvg2.append("rect")
+                    .attr("class", "asylum-legend")
+                    .attr("fill", "#5F6F52")
+                    .attr("y", -15)
+                    .attr("x", 100)
+                    .attr("width", 15)
+                    .attr("height", 15)
+
+                vis.sideSvg2.append("text")
+                    .attr("y", -5)
+                    .attr("x", 25)
+                    .attr("class", "bar-label asylum-legend")
+                    .text("Recognized")
+
+                vis.sideSvg2.append("text")
+                    .attr("y", -5)
+                    .attr("x", 120)
+                    .attr("class", "bar-label asylum-legend")
+                    .text("Not Recognized")
+                    
             }
         }
 
@@ -481,10 +513,10 @@ class MapVis {
 
         // get slider range
         let valuesDivs = document.getElementsByClassName("range-slider-value")
-        let min_date = vis.parseDate(valuesDivs[0].innerHTML)
-        let max_date = vis.parseDate(valuesDivs[1].innerHTML)
+        vis.min_date = vis.parseDate(valuesDivs[0].innerHTML)
+        vis.max_date = vis.parseDate(valuesDivs[1].innerHTML)
 
-        vis.filteredData = vis.refugeeData.filter(d => {return (d.Year >= min_date) && (d.Year <= max_date)})
+        vis.filteredData = vis.refugeeData.filter(d => {return (d.Year >= vis.min_date) && (d.Year <= vis.max_date)})
 
         // get selected variables
         vis.selected_cat = document.querySelector(".map-button.active").innerText

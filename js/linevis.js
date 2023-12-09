@@ -85,6 +85,8 @@ class LineVis {
             d.Year = vis.parseTime(d.Year);
         })
 
+        vis.data = vis.data.filter(d => {return (d.Year >= vis.parseTime(2012))})
+
         console.log(vis.data)
 
         vis.dataByCountry = Array.from(d3.group(vis.data, d=>d["Country of origin"]), ([key, value]) => ({key, value}))
