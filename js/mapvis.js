@@ -395,14 +395,16 @@ class MapVis {
                 let totalByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Total decisions"]), d=>d.Year), ([year, value])=>({year, value}))
                 let acceptedByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Recognized decisions"]), d=>d.Year), ([year, value])=>({year, value}))
 
-                totalByYear.sort(function(a,b) {return a.year - b.year})
-                acceptedByYear.sort(function(a,b) {return a.year - b.year})
+                totalByYear.sort()
+                acceptedByYear.sort()
+
+                console.log(totalByYear)
 
                 // vertical bar graph axes
                 let vbar_xScale = d3.scaleBand()
                     .rangeRound([0, vis.sideWidth2])
                     .paddingInner(0.1)
-                    .domain(totalByYear.map(d=>vis.formatDate(d.year)))
+                    .domain(totalByYear.map(d=>d.year))
                     
                 let vbar_xAxis = d3.axisBottom()
                     .scale(vbar_xScale)
@@ -447,7 +449,7 @@ class MapVis {
                     .attr("class", "main-bar")
                     .attr("width", vbar_xScale.bandwidth())
                     .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
-                    .attr("x", d => vbar_xScale(vis.formatDate(d.year)))
+                    .attr("x", d => vbar_xScale(d.year))
                     .attr("y", d=>vbar_yScale(d.value))
                     .attr("fill", "#5F6F52")
                 
@@ -464,7 +466,7 @@ class MapVis {
                     .attr("class", "frac-bar")
                     .attr("width", vbar_xScale.bandwidth())
                     .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
-                    .attr("x", d => vbar_xScale(vis.formatDate(d.year)))
+                    .attr("x", d => vbar_xScale(d.year))
                     .attr("y", d=>vbar_yScale(d.value))
                     .attr("fill", "#A9B388")
             }
