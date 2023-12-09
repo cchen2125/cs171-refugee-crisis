@@ -9,10 +9,11 @@ let myBubbleVis,
 let promises = [    
     d3.csv('data/asylum_applications.csv'),
     d3.csv('data/asylum_decisions.csv'),
-    d3.csv('data/population_bycountry.csv'),
+    d3.csv('data/population.csv'),
     d3.csv('data/country_data.csv'),
     d3.csv('data/gdp_population_refugee.csv'),
-    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
+    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"),
+    d3.csv('data/asylum_decisions.csv'),
 ];
 
 Promise.all(promises)
@@ -21,7 +22,7 @@ Promise.all(promises)
 
 // initMainPage
 function initMainPage(allDataArray) {
-
+    
     // log data
     console.log(allDataArray);
 
@@ -39,7 +40,7 @@ function initMainPage(allDataArray) {
 
     myScatterVis = new ScatterVis("scattervis", allDataArray[3], allDataArray[4], allDataArray[1])
 
-    myMapVis = new MapVis("mapvis", allDataArray[5], allDataArray[2])
+    myMapVis = new MapVis("mapvis", allDataArray[5], allDataArray[2], allDataArray[6])
     makeSlider()
 }
 
@@ -71,7 +72,7 @@ function checkAnswer() {
         } else {
             document.getElementById("answer").innerHTML = "<h1 class='slide-text'> Actually, it's Syria.</h1>"
         }
-        document.getElementById("answer").innerHTML += "<p>Below is a more comprehensive look at where refugees have been coming from over the past 6 years. Hover over the points for detailed values.<p>"
+        document.getElementById("answer").innerHTML += "<p>Below is a more comprehensive look at where refugees have been coming from over the past 10 years. Hover over the points for detailed values.<p>"
         document.getElementById("linegraph-section").style.visibility = "visible";
         document.getElementById("temp-text").style.display = "none";
 

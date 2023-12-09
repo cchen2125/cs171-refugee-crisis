@@ -138,6 +138,11 @@ body {
     justify-content: center;
 }
 
+#linevis-description {
+    width: 75vw;
+    font-size:smaller;
+}
+
 #barchart-section {
     visibility: hidden;
     justify-content: center;
@@ -159,9 +164,8 @@ body {
 }
 
 .map-page {
-    margin-top: 5vh;
     margin-bottom: 5vh;
-    width: 90vw;
+    width: 95vw;
 }
 
 .sources {
@@ -225,9 +229,32 @@ body {
     color: maroon;
     margin: 0;
     text-align: left;
+    font-size: 0.8em;
+}
+
+.map-side-title {
+    font-size:0.9em;
+    margin:0;
 }
 
 #resetButton {
-    background-color: #B85C38;
+    background-color: maroon;
     color:#F1DEC9;
+}
+
+#side-graph1, #side-graph2 {
+    height: 20vh
+}
+
+.bar-label {
+    font-size: 0.7em;
+}
+
+#bubblevis, #scattervis {
+    height: 80vh;
+}
+
+#barvis {
+    height: 80vh;
+    width: 55vw;
 }
