@@ -10,19 +10,16 @@ class BubbleVis {
     initVis() {
         let vis= this;
 
-        vis.margin = {top: 10, right: 0, bottom: 0, left: 0};
-        vis.width = 600;
-        vis.height = 600;
+        vis.margin = {top: 0, right: 150, bottom: 10, left: 20};
+        vis.width = 660;
+        vis.height = 640;
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
             .attr("width", vis.width + vis.margin.left + vis.margin.right)
             .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+            .attr("transform", "translate(" + (60) + "," + (-30) + ")")
             .append("g");
-
-        // Scale
-        vis.scale = d3.scaleLinear()
-            .range([0, 100]);
 
         // Set up the pack layout
         vis.pack = d3.pack()
@@ -66,7 +63,7 @@ class BubbleVis {
                 .duration(200)
                 .style("opacity", 0);
         };
-
+  
         vis.wrangleData();
     }
 
@@ -132,6 +129,7 @@ class BubbleVis {
         
         vis.pack(root);
 
+        console.log('this')
         console.log(root)
 
         // Place each (leaf) node according to the layout’s x and y values.
@@ -167,5 +165,67 @@ class BubbleVis {
             .attr("text-anchor", "middle")
             .style("font-size", "12px")
             .style("pointer-events", "none");
+
+        // Legend        
+
+        // Legend group
+        vis.legend = vis.svg.append("g")
+            .attr("class", "legend")
+            .attr("transform", "translate(29, 3)");
+
+        // Add a scale for bubble size
+        vis.z = d3.scaleSqrt()
+            .domain([125000, 4500000])
+            .range([ 6, 107]);
+
+        // Values to show in legend
+        let valuesToShow = [500000, 1000000, 2000000]
+        let xCircle = 665
+        let xLabel = 767
+
+        // Create legend circles
+        vis.legend.selectAll(".legend-circle")
+            .data(valuesToShow)
+            .enter()
+            .append("circle")
+            .attr("class", "legend-circle")
+            .attr("cx", xCircle) 
+            .attr("cy", (d, i) => vis.height - 50 - vis.z(d)) 
+            .attr("r", d => vis.z(d)) 
+            .attr("fill", "none") 
+            .attr("stroke", "black") 
+            .attr("stroke-width", 1); 
+
+        // Add legend: segments
+        vis.svg.selectAll("legend-segment")
+            .data(valuesToShow)
+            .enter()
+            .append("line")
+            .attr("class", "legend-segment")
+            .attr("x1", (d) => xCircle + vis.z(d) + 27)
+            .attr("x2", xLabel + 3)
+            .attr("y1", (d, i) => vis.height - 48 - vis.z(d))
+            .attr("y2", (d, i) => vis.height - 48 - vis.z(d))
+            .attr("stroke", "black")
+            .style("stroke-dasharray", "2,2");
+
+        // Create legend labels
+        vis.legend.selectAll(".legend-label")
+            .data(valuesToShow)
+            .enter()
+            .append("text")
+            .attr("class", "legend-label")
+            .attr("x", xLabel - 19) 
+            .attr("y", (d, i) => vis.height - 49 - vis.z(d)) 
+            .text((d) => `${d3.format(",")(d)}`)
+            .style("font-size", "8px");
+
+        // Add legend title
+        vis.legend.append("text")
+            .attr('x', xCircle)
+            .attr("y", vis.height - 29)
+            .text("# of Asylum Decisions")
+            .attr("text-anchor", "middle")
+            .style("font-size", "13px");
     }
 }

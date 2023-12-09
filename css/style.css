@@ -197,8 +197,14 @@ body {
 .slide-text {
     max-width: 60vw;
     margin: auto;
-    font-size: 1.5em;
+    font-size: 1.3em;
     margin-bottom: 30px;
+}
+
+#toggle-text {
+    margin-top: 7vh;
+    font-size: 1.3em;
+    font-style: italic;
 }
 
 #map-filters {

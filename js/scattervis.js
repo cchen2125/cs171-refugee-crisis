@@ -13,7 +13,7 @@ class ScatterVis {
 
         vis.margin = {top: 40, right: 10, bottom: 10, left: 40};
         vis.width = 900;
-        vis.height = 500;
+        vis.height = 530;
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -82,9 +82,9 @@ class ScatterVis {
                 .style("opacity", 1)
             vis.tooltip
                 .html(`<strong>${d[0]}</strong> 
-                <br>GDP (2022): ${d[1].gdp} 
-                <br>Total Population (2022): ${d[1].population} 
-                <br>Recognized Asylum Decisions: ${d[1].recognizedDecisions}`)
+                <br>GDP (2022): $${(d[1].gdp)} 
+                <br>Total Population (2022): ${d3.format(",")(d[1].population)} 
+                <br>Recognized Asylum Decisions: ${d3.format(",")(d[1].recognizedDecisions)}`)
                     .style("left", (event.pageX + 20) + "px")
                     .style("top", (event.pageY - 30) + "px");
         };

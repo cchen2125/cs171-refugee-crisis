@@ -35,7 +35,7 @@
             </video>
             <div class="layer">
                 <h1 id="title">Mapping the Refugee Crisis</h1>
-                <h1 id="subheading">A Data Journey</h1>
+                <h1 id="subheading">A Data Exploration</h1>
             </div>    
         </div>
    
@@ -162,13 +162,13 @@
         <div class="section style2">
             <div class="row" data-aos="fade-up" data-aos-delay="300">
                 <div class="col-12">
-                    <h1 class="slide-text">Recognized asylum decisions out of total decisions</h1>
+                    <h1 class="slide-text">Here are the number of total asylum application decisions compared with the accepted decisions:</h1>
                 </div>
                 <div class="col-7">
                     <div id="bubblevis"></div>
                 </div>
-                <div class="col-4 explanation">
-                    <p>Asylum decisions over period of UNHCR tracking</p>
+                <div class="col-3 explanation">
+                    <p>The darker inner circles show recognized decisions as a percentage of overall dcisions, over the time period of UNHCR tracking</p>
                 </div>
             </div>
         </div>
@@ -176,31 +176,35 @@
         <div class="section style2">
             <h1 class="slide-text">
                 <span>
-                    This might be surprising compared to which countries have the most resources. 
+                    You might have noticed the top countries are not necessarily those with the most economic resources.
                 </span>
             </h1>
             <div class="row">
-                <div class="col-8">
+                <div class="col-9">
                     <div id="scattervis"></div>
                 </div>
                 <div class="col-2">
                     <p>
                         <span>
-                            Here’s how the asylum acceptances of different countries compare with their GDP (Gross Domestic Product in U.S. Dollars, a measure of the market value of a country's total goods and services):
+                            Here’s how the asylum acceptances of different countries compare with their GDP (Gross Domestic Product in U.S. Dollars, a measure of the market value of a country's total goods and services).
                         </span>
                         <br>
+                        <br>
                         <span>
-                            Which countries are surprising?
+                            The circle size corresponds to asylum acceptances. Hover to see full details.
                         </span>
                     </p>
-                    <h4>Toggle to see more relationships with asylum acceptances:</h4>
-                    <select id="select-box" class="form-control rounded" onchange="categoryChange()">
-                        <option value="gdp">GDP (in USD)</option>
-                        <option value="growth">GDP Growth (Annual %)</option>
-                        <option value="population">Total Population</option>
-                        <option value="pop_growth">Population Growth (Annual %)</option>
-                        <option value="pop_density">Population Density (2021)</option>
-                    </select>
+                    <br>
+                    <div data-aos="fade-up" data-aos-delay="1000">
+                        <h5 id="toggle-text">Toggle to see more relationships with asylum acceptances:</h5>
+                        <select id="select-box" class="form-control rounded" onchange="categoryChange()">
+                            <option value="gdp">GDP (in USD)</option>
+                            <option value="growth">GDP Growth (Annual %)</option>
+                            <option value="population">Total Population</option>
+                            <option value="pop_growth">Population Growth (Annual %)</option>
+                            <option value="pop_density">Population Density (2021)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
