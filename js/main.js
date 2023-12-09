@@ -35,7 +35,7 @@ function initMainPage(allDataArray) {
 
     myScatterVis = new ScatterVis("scattervis", allDataArray[3], allDataArray[4], allDataArray[1])
 
-    myMapVis = new MapVis("mapvis", allDataArray[5], allDataArray[2])
+    myMapVis = new MapVis("mapvis", allDataArray[5], allDataArray[2], allDataArray[1])
     makeSlider()
 }
 
