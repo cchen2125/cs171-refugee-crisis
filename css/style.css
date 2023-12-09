@@ -138,6 +138,11 @@ body {
     justify-content: center;
 }
 
+#linevis-description {
+    width: 75vw;
+    font-size:smaller;
+}
+
 #barchart-section {
     visibility: hidden;
     justify-content: center;
@@ -237,4 +242,13 @@ body {
 
 .bar-label {
     font-size: 0.7em;
+}
+
+#bubblevis, #scattervis {
+    height: 80vh;
+}
+
+#barvis {
+    height: 80vh;
+    width: 55vw;
 }
