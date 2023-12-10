@@ -45,7 +45,7 @@ class ScatterVis {
 
         // Y axis
         vis.y = d3.scaleLinear()
-            .range([vis.height-70, 0]);
+            .range([vis.height-80, 0]);
 
         vis.svg.append("g")
             .attr("transform", `translate(20,0)`)
@@ -75,14 +75,14 @@ class ScatterVis {
 
         // Functions to show/update tooltip
         vis.showTooltip = function(event, d, context) {
-            d3.select(context).select(".inner-circle")
-                .attr("fill", '#5F6F52')
+            d3.select(context).select(".dots")
+                .attr("fill", '#EFE9E9')
             vis.tooltip
                 .transition()
                 .style("opacity", 1)
             vis.tooltip
                 .html(`<strong>${d[0]}</strong> 
-                <br>GDP (2022): $${(d[1].gdp)} 
+                <br>GDP (2022): $${d3.format(",")(String(d[1].gdp))}
                 <br>Total Population (2022): ${d3.format(",")(d[1].population)} 
                 <br>Recognized Asylum Decisions: ${d3.format(",")(d[1].recognizedDecisions)}`)
                     .style("left", (event.pageX + 20) + "px")
@@ -96,33 +96,13 @@ class ScatterVis {
         };
         
         vis.hideTooltip = function(event, d, context) {
-            d3.select(context).select(".inner-circle")
+            d3.select(context).select(".dots")
                 .attr("fill", '#5F6F52')
             vis.tooltip
                 .transition()
                 .duration(200)
                 .style("opacity", 0);
         };
-
-        // Zoom
-        vis.xOrig = vis.x; 
-        vis.yOrig = vis.y; // Save original scales
-
-        // Disable mousedown and drag in zoom, when you activate zoom (by .call)
-		// vis.svg.select(".brush").call(vis.zoom)
-        //     .on("mousedown.zoom", null)
-        //     .on("touchstart.zoom", null);
-
-        // Functions to handle highlight and no highlight
-        // vis.highlight = function(d){
-        //     // reduce opacity of all groups
-        //     vis.svg.selectAll(".dots").style("opacity", .5)
-        //     // except the one that is hovered
-        //     vis.svg.selectAll(".dot").style("opacity", 1)
-        // }
-        // vis.noHighlight = function(){
-        //     vis.svg.selectAll(".dots").style("opacity", 1)
-        // }
 
         vis.wrangleData()
 
@@ -243,7 +223,7 @@ class ScatterVis {
         dots.append("circle")
             .attr("fill-opacity", 1)
             .attr("fill", '#5F6F52')
-            .attr("class", "dot")
+            .attr("class", "dots")
             .attr("r", d => vis.z(d[1].recognizedDecisions));
 
         // Update selection
@@ -253,39 +233,5 @@ class ScatterVis {
         // Exit selection
         dots.exit().remove();
 
-        // Zoom function
-        // vis.zoomFunction = function(event) {
-        //     let { x, y, k } = event.transform;
-        
-        //     console.log(k)
-
-        //     // Update scales
-        //     vis.x.range([20 * k, (vis.width - 60) * k]);
-        //     vis.y.range([(vis.height - 80) * k, 0]);
-
-        //     // Update axes
-        //     vis.svg.select(".x-axis").call(vis.xAxis);
-        //     vis.svg.select(".y-axis").call(vis.yAxis);
-        
-        //     // Update circles or other elements as needed
-        //     vis.updateVis();
-        // };
-
-        // // Initialize the zoom component
-        // vis.zoom = d3.zoom()
-        //     .extent([[0, 0], [vis.width, vis.height]])
-        //     .scaleExtent([1, 20])
-        //     .on("zoom", vis.zoomFunction);
-
-        // // Zoom rectangle
-        // vis.svg.append("rect")
-        //     .attr("width", vis.width)
-        //     .attr("height", vis.height)
-        //     .style("fill", "none")
-        //     .style("pointer-events", "all")
-        //     .call(vis.zoom);
-
-        //     .attr("class", function(d) { return "bubbles " + d.continent })
-        //     .style("fill", function (d) { return myColor(d.continent); } )
     }
 }
