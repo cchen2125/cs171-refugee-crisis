@@ -17,13 +17,13 @@ It uses an interactive storytelling approach to raise awareness of the refugee c
 - `css/`: contains library CSS files as well as our custom `styles.css`, `aos-delays.css` containing animation durations for the AOS library, and `fullpage` folder with the library CSS.
 - `img/`: contains icons, background videos, and visuals used in presentation slides.
 - `js/`: files for each individual visualization.
-- `main.js`: loads the data and the visualization.
-- `barVis.js`: bar visualization graph to show top countries with asylum acceptances
-- `bubbleVis.js`: bubble visualization graph to show recognized versus total asylum decisions
-- `lineVis.js`: line visualization graph to show refugees by country over time
-- `lineVis2.js`: second line visualization graph to show overall number of refugees worldwide
-- `mapVis.js`: map visualization graph with full information on all countries as well as additional bar charts
-- `scatterVis.js`: scatter visualization graph to show relation of asylum acceptances and GDP as well as other country economic data
+    - `main.js`: loads the data and the visualization.
+    - `barVis.js`: bar visualization graph to show top countries with asylum acceptances
+    - `bubbleVis.js`: bubble visualization graph to show recognized versus total asylum decisions
+    - `lineVis.js`: line visualization graph to show refugees by country over time
+    - `lineVis2.js`: second line visualization graph to show overall number of refugees worldwide
+    - `mapVis.js`: map visualization graph with full information on all countries as well as additional bar charts
+    - `scatterVis.js`: scatter visualization graph to show relation of asylum acceptances and GDP as well as other country economic data
 
 data_description.pdf contains a description of the datasets used.
 
