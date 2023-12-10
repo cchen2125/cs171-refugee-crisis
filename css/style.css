@@ -92,7 +92,7 @@ a {
 }
 
 #time-period-slider {
-    width: 100px;
+    width: 100%;
     display: inline-block;
     margin: 0 15px;
   }
@@ -163,8 +163,13 @@ a {
     margin-bottom: 10vh;
 }
 
+#map-section {
+    padding-bottom: 0;
+    padding-top: 1vh;
+}
+
 .map-page {
-    margin-bottom: 5vh;
+    padding-right: 5vh;
     width: 95vw;
 }
 
@@ -211,14 +216,15 @@ a {
     font-style: italic;
 }
 
-#map-filters {
-    display:flex;
-    justify-content: center;
-    align-items: center;
+#mapvis {
+    height: 60vh;
 }
 
 .map-filter {
     padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    justify-content: center;
 }
 
 .map-legend-label {
@@ -233,16 +239,25 @@ a {
 }
 
 .map-side-title {
-    font-size:0.9em;
+    font-size:0.8em;
     margin:0;
 }
 
 #resetButton {
     background-color: #5F6F52;
     color:#F1DEC9;
+    font-size:smaller;
 }
 
-#side-graph1, #side-graph2 {
+.map-button {
+    font-size:smaller;
+}
+
+#attribute {
+    font-size: smaller;
+}
+
+#side-graph1, #side-graph2, #side-graph3, #side-graph4 {
     height: 20vh
 }
 
@@ -261,4 +276,18 @@ a {
 #barvis {
     height: 75vh;
     width: 55vw;
+}
+
+hr {
+    margin-bottom: 0;
+}
+
+.vl {
+    border-right: 1.5px solid rgba(0, 0, 0, 0.25);
+    padding-right: 0px;
+}
+
+#final-vis {
+    height: 60vh;
+    width: 75vw;
 }

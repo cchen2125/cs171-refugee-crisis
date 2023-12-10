@@ -18,14 +18,14 @@ class MapVis {
 
         vis.margin = {top: 10, right: 10, bottom: 10, left: 10};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = 0.5*vis.width - vis.margin.top - vis.margin.bottom;
+        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
         // Parse Year
         vis.parseDate = d3.timeParse("%Y")
         vis.formatDate = d3.timeFormat("%Y");
 
         // scale based on the height and default  value
-        let zoomFactor = vis.height / 650; 
+        let zoomFactor = vis.height / 575; 
         let scale = 249.5 * zoomFactor;
 
         // init drawing area
@@ -33,21 +33,6 @@ class MapVis {
             .attr("width", vis.width)
             .attr("height", vis.height)
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
-
-        // draw background
-        //vis.svg.append("rect")
-        //    .attr("width", vis.width)
-        //    .attr("height", vis.height)
-        //    .attr("fill", "#ADDEFF")
-
-        // add title
-        /*vis.svg.append('g')
-            .attr('class', 'title')
-            .attr('id', 'map-title')
-            .append('text')
-            .text('Title for Map')
-            .attr('transform', `translate(${vis.width / 2}, 20)`)
-            .attr('text-anchor', 'middle');*/
 
         // add tooltip
         vis.tooltip = d3.select("body").append('div')
@@ -58,7 +43,7 @@ class MapVis {
         // TODO: create map projection
         vis.projection = d3.geoNaturalEarth1()
             .scale(scale)
-            .translate([vis.width / 2, 0.6*vis.height ]);
+            .translate([0.45*vis.width, 0.58*vis.height ]);
         
         // geo generator
         vis.path = d3.geoPath()
@@ -79,7 +64,7 @@ class MapVis {
 
         // color scale
         vis.colorScale = d3.scaleSequential(d3.interpolateLab("white", "#425930"))
-            .domain([0, vis.width * 0.25])
+            .domain([0, vis.width * 0.2])
 
         // TODO: fix legend
 
@@ -90,8 +75,8 @@ class MapVis {
 
         // legend scale
         vis.legendScale = d3.scaleLinear()
-            .range([0, vis.width * 0.25])
-            .domain([0, vis.width * 0.25]);
+            .range([0, vis.width * 0.2])
+            .domain([0, vis.width * 0.2]);
 
         // legend axis group
         vis.legendAxisGroup = vis.legend.append('g')
@@ -119,7 +104,7 @@ class MapVis {
             .attr("stop-color", d => d.color);
         
         vis.legend.append("rect")
-            .attr("width", vis.legendScale(vis.width * 0.25))
+            .attr("width", vis.legendScale(vis.width * 0.2))
             .attr("height", vis.height / 30)
             .attr("x", 0)
             .attr("y", 0)
@@ -154,6 +139,12 @@ class MapVis {
             .append('g')
             .attr('transform', `translate (${vis.sideMargin1.left}, ${vis.sideMargin1.top})`)
 
+        vis.sideSvg3 = d3.select('#side-graph3').append('svg')
+            .attr("width", vis.sideWidth1 + vis.sideMargin1.left + vis.sideMargin1.right)
+            .attr("height", vis.sideHeight1 + vis.sideMargin1.top + vis.sideMargin1.bottom)
+            .append('g')
+            .attr('transform', `translate (${vis.sideMargin1.left}, ${vis.sideMargin1.top})`)
+
         vis.sideMargin2 = {top: 20, right:10, bottom: 20, left:60}
         vis.sideWidth2 = document.getElementById('side-graph2').getBoundingClientRect().width - vis.sideMargin2.left - vis.sideMargin2.right
         vis.sideHeight2 = document.getElementById('side-graph2').getBoundingClientRect().height - vis.sideMargin2.top - vis.sideMargin2.bottom
@@ -163,344 +154,359 @@ class MapVis {
             .append('g')
             .attr('transform', `translate (${vis.sideMargin2.left}, ${vis.sideMargin2.top})`)
 
+        vis.sideSvg4 = d3.select('#side-graph4').append('svg')
+            .attr("width", vis.sideWidth2 + vis.sideMargin2.left + vis.sideMargin2.right)
+            .attr("height", vis.sideHeight2 + vis.sideMargin2.top + vis.sideMargin2.bottom)
+            .append('g')
+            .attr('transform', `translate (${vis.sideMargin2.left}, ${vis.sideMargin2.top})`)
+
         vis.updateSidebar = function(d) {
             if (d == "none") {
                 return
             }
-            if (!Object.keys(vis.displayData).includes(d.properties.name)) {
-                d3.select('#country-info').html('').append('strong').text(vis.selected_cat + ": " + d.properties.name)
-                d3.select('#country-info').append('p').text("No data available")
-                d3.select('#side-title1').html('')
-                d3.select('#side-title2').html('')
+            // Sidebar Titles
+            d3.select('#country-info').html('').append('strong').text(vis.selected_cat + ": " + d.properties.name)
+            d3.select('#side-title1').text(`Where refugees from ${d.properties.name} are seeking asylum`)
+            d3.select('#side-title2').text(`Refugees from ${d.properties.name} over time`)
+            d3.select('#side-title3').text(`Where refugees seeking asylum in ${d.properties.name} are originally from`)
+            d3.select('#side-title4').text(`Asylum applications and status in ${d.properties.name} over time`)
+
+            // Get data of just this country
+            let originCountryData = vis.refugeeData.filter(data => {return (data["Country of origin"] == d.properties.name) && (data.Year >= vis.min_date) && (data.Year <= vis.max_date)})
+            let asylumCountryData = vis.refugeeData.filter(data => {return (data["Country of asylum"] == d.properties.name) && (data.Year >= vis.min_date) && (data.Year <= vis.max_date)})
+            let countryData = originCountryData
+            
+            if (vis.selected_cat == "Country of asylum") {
+                countryData = asylumCountryData
+            }
+
+            if ((originCountryData.length == 0) && (asylumCountryData.length == 0)) {
                 vis.sideSvg1.selectAll("*").remove()
                 vis.sideSvg2.selectAll("*").remove()
+                vis.sideSvg3.selectAll("*").remove()
+                vis.sideSvg4.selectAll("*").remove()
                 return
             }
 
-            // Sidebar Title
-            d3.select('#country-info').html('').append('strong').text(vis.selected_cat + ": " + d.properties.name)
-            
-            // Get data of just this country
-            let countryData = vis.countryInfo[d.properties.name]
-
             // Display summary statistics
-            let infoList = d3.select('#country-info').append('ul')
+            if (!Object.keys(vis.displayData).includes(d.properties.name)) {
+                d3.select('#country-info').append('p').append('span').text("No data available").attr('class', 'map-side-text').attr("style", "margin-bottom: 0;")
+            } else {
+                let infoList = d3.select('#country-info').append('p').attr("style", "margin-bottom: 0;")
         
-            infoList.append('li')
-                .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " refugees under UNHCR's mandate")
-                .attr('class', 'map-side-text')
+                infoList.append('span')
+                    .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " refugees under UNHCR's mandate • ")
+                    .attr('class', 'map-side-text')
+                
+                infoList.append('span')
+                    .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["IDPs of concern to UNHCR"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " IDPs of concern to UNHCR • ")
+                    .attr('class', 'map-side-text')
+                
+                infoList.append('span')
+                    .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["Others of concern"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " others of concern")
+                    .attr('class', 'map-side-text')
+            }
             
-            infoList.append('li')
-                .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["IDPs of concern to UNHCR"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " IDPs of concern to UNHCR")
-                .attr('class', 'map-side-text')
-            
-            infoList.append('li')
-                .text(d3.format(",")(d3.rollup(countryData, v => d3.sum(v, d=>d["Others of concern"]), d=>d[vis.selected_cat]).get(d.properties.name)) + " others of concern")
-                .attr('class', 'map-side-text')
-
-            vis.sideSvg2.selectAll(".asylum-legend").remove()
 
             // create graphs
-            if(vis.selected_cat == "Country of origin") {
-                // Get asylum country numbers
-                let asylumData = Array.from(d3.rollup(countryData, v=> d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d["Country of asylum"]), ([country, value]) => ({country, value}))
-                asylumData.sort(function(a,b) {return b.value - a.value})
-                asylumData = asylumData.slice(0,5)
-                asylumData = asylumData.filter(d=>{return (d.value > 0)})
+            if (originCountryData.length == 0) {
+                vis.sideSvg1.selectAll("*").remove()
+                vis.sideSvg2.selectAll("*").remove()
+            } else {
+            // Get asylum country numbers
+            let asylumData = Array.from(d3.rollup(originCountryData, v=> d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d["Country of asylum"]), ([country, value]) => ({country, value}))
+            asylumData.sort(function(a,b) {return b.value - a.value})
+            asylumData = asylumData.slice(0,5)
+            asylumData = asylumData.filter(d=>{return (d.value > 0)})
 
-                // horizontal bar graph title
-                d3.select('#side-title1').text(`Where refugees from ${d.properties.name} are seeking asylum`)
 
-                // horizontal bar graph axes
-                let hbar_xScale = d3.scaleLinear()
-                    .range([0, vis.sideWidth1])
-                    .domain([0, d3.max(asylumData, d=>d.value)])
+            // horizontal bar graph axes
+            let hbar_xScale = d3.scaleLinear()
+                .range([0, vis.sideWidth1])
+                .domain([0, d3.max(asylumData, d=>d.value)])
 
-                let hbar_yScale = d3.scaleBand()
-                    .domain(asylumData.map(d=>d.country))
-                    .rangeRound([0,vis.sideHeight1])
-                    .paddingInner(0.1)
+            let hbar_yScale = d3.scaleBand()
+                .domain(asylumData.map(d=>d.country))
+                .rangeRound([0,vis.sideHeight1])
+                .paddingInner(0.1)
 
-                let yAxis = d3.axisLeft()
-                    .scale(hbar_yScale)
+            let yAxis = d3.axisLeft()
+                .scale(hbar_yScale)
+            
+            vis.sideSvg1.append("g")
+                .attr("class", "y-axis axis");
+
+            vis.sideSvg1.select(".y-axis")
+                .transition()
+                .duration(750)
+                .call(yAxis)
+
+            // Draw horizontal bars
+            vis.hbars = vis.sideSvg1.selectAll("rect")
+                .data(asylumData)
+
+            vis.hbars.exit().remove()
+            
+            vis.hbars.enter()
+                .append("rect")
+                .merge(vis.hbars)
+                .transition()
+                .duration(750)
+                .attr("width", d=>hbar_xScale(d.value))
+                .attr("height", hbar_yScale.bandwidth())
+                .attr("y", d=>hbar_yScale(d.country))
+                .attr("fill", "#5F6F52")
+
+            // Draw horizontal bar labels
+            vis.hbarlabels = vis.sideSvg1.selectAll(".bar-label")
+                .data(asylumData)
+
+            vis.hbarlabels.exit().remove()
+            
+            vis.hbarlabels.enter()
+                .append("text")
+                .merge(vis.hbarlabels)
+                .transition()
+                .duration(750)
+                .attr("class", "bar-label")
+                .attr("x", d=> hbar_xScale(d.value) + 3)
+                .attr("y", d=> hbar_yScale(d.country) + hbar_yScale.bandwidth()/2 + 3)
+                .text(d=> d.value)
+
+            // second graph 
+
+            // group by year
+            let dataByYear = Array.from(d3.rollup(originCountryData, v=> d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d.Year), ([year, value])=>({year, value}))
+            dataByYear.sort(function(a,b) {return a.year - b.year})
+
+            // vertical bar graph axes
+            let vbar_xScale = d3.scaleBand()
+                .rangeRound([0, vis.sideWidth2])
+                .paddingInner(0.1)
+                .domain(dataByYear.map(d=>vis.formatDate(d.year)))
                 
-                vis.sideSvg1.append("g")
-                    .attr("class", "y-axis axis");
+            let vbar_xAxis = d3.axisBottom()
+                .scale(vbar_xScale)
+                .tickValues(vbar_xScale.domain().filter(function(d,i){ return !(i%5)}))
+            
+            vis.sideSvg2.append("g")
+                .attr("class", "x-axis axis")
+                .attr("transform", "translate(0," + vis.sideHeight2 + ")");
 
-                vis.sideSvg1.select(".y-axis")
-                    .transition()
-                    .duration(750)
-                    .call(yAxis)
+            vis.sideSvg2.select(".x-axis")
+                .transition()
+                .duration(750)
+                .call(vbar_xAxis)
 
-                // Draw horizontal bars
-                vis.hbars = vis.sideSvg1.selectAll("rect")
-                    .data(asylumData)
+            let vbar_yScale = d3.scaleLinear()
+                .domain([0, d3.max(dataByYear, d=>d.value)])
+                .range([vis.sideHeight2,0])
 
-                vis.hbars.exit().remove()
+            let vbar_yAxis = d3.axisLeft()
+                .scale(vbar_yScale)
+                .ticks(5)
+            
+            vis.sideSvg2.append("g")
+                .attr("class", "y-axis axis");
+
+            vis.sideSvg2.select(".y-axis")
+                .transition()
+                .duration(750)
+                .call(vbar_yAxis)
+
+            // draw vertical bars
+            vis.vbars = vis.sideSvg2.selectAll("rect.main-bar")
+                .data(dataByYear)
+            
+            vis.vbars.exit().remove()
+
+            vis.vbars.enter()
+                .append("rect")
+                .merge(vis.vbars)
+                .transition()
+                .duration(750)
+                .attr("class", "main-bar")
+                .attr("width", vbar_xScale.bandwidth())
+                .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
+                .attr("x", d => vbar_xScale(vis.formatDate(d.year)))
+                .attr("y", d=>vbar_yScale(d.value))
+                .attr("fill", "#5F6F52")
+            }
+
+            if (asylumCountryData.length == 0) {
+                vis.sideSvg3.selectAll("*").remove()
+                vis.sideSvg4.selectAll("*").remove()
+            } else {
+            // Get origin country numbers
+            let originData = Array.from(d3.rollup(asylumCountryData, v=> d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d["Country of origin"]), ([country, value]) => ({country, value}))
+            originData.sort(function(a,b) {return b.value - a.value})
+            originData = originData.slice(0,5)
+            originData = originData.filter(d=>{return (d.value > 0)})
+
+            // bar graph axes
+            let hbar_xScale = d3.scaleLinear()
+                .range([0, vis.sideWidth1])
+                .domain([0, d3.max(originData, d=>d.value)])
+
+            let hbar_yScale = d3.scaleBand()
+                .domain(originData.map(d=>d.country))
+                .rangeRound([0,vis.sideHeight1])
+                .paddingInner(0.1)
+
+            let yAxis = d3.axisLeft()
+                .scale(hbar_yScale)
+            
+            vis.sideSvg3.append("g")
+                .attr("class", "y-axis axis");
+
+            vis.sideSvg3.select(".y-axis")
+                .transition()
+                .duration(750)
+                .call(yAxis)
+
+            // Draw bars
+            vis.hbars = vis.sideSvg3.selectAll("rect")
+                .data(originData)
+
+            vis.hbars.exit().remove()
+            
+            vis.hbars.enter()
+                .append("rect")
+                .merge(vis.hbars)
+                .transition()
+                .duration(750)
+                .attr("width", d=>hbar_xScale(d.value))
+                .attr("height", hbar_yScale.bandwidth())
+                .attr("y", d=>hbar_yScale(d.country))
+                .attr("fill", "#5F6F52")
+
+            // Draw bar labels
+            vis.hbarlabels = vis.sideSvg3.selectAll(".bar-label")
+                .data(originData)
+
+            vis.hbarlabels.exit().remove()
+            
+            vis.hbarlabels.enter()
+                .append("text")
+                .merge(vis.hbarlabels)
+                .transition()
+                .duration(750)
+                .attr("class", "bar-label")
+                .attr("x", d=> hbar_xScale(d.value) + 3)
+                .attr("y", d=> hbar_yScale(d.country) + hbar_yScale.bandwidth()/2 + 3)
+                .text(d=> d.value)
+
+            let countryCode = asylumCountryData[0]["Country of asylum (ISO)"]
+            let countryDecisions = vis.decisionData.filter(d=>{return (d["Country of asylum (ISO)"] == countryCode) && (vis.parseDate(d.Year) >= vis.min_date) && (vis.parseDate(d.Year) <= vis.max_date)})
+
+            //console.log(countryDecisions)
+
+            // group by year
+            let totalByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Total decisions"]), d=>d.Year), ([year, value])=>({year, value}))
+            let acceptedByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Recognized decisions"]), d=>d.Year), ([year, value])=>({year, value}))
+
+            totalByYear.sort(function(a,b) {return vis.parseDate(a.year) - vis.parseDate(b.year)})
+            acceptedByYear.sort(function(a,b) {return vis.parseDate(a.year) - vis.parseDate(b.year)})
+
+            //console.log(totalByYear)
+
+            // vertical bar graph axes
+            let vbar_xScale = d3.scaleBand()
+                .rangeRound([0, vis.sideWidth2])
+                .paddingInner(0.1)
+                .domain(totalByYear.map(d=>d.year))
                 
-                vis.hbars.enter()
-                    .append("rect")
-                    .merge(vis.hbars)
-                    .transition()
-                    .duration(750)
-                    .attr("width", d=>hbar_xScale(d.value))
-                    .attr("height", hbar_yScale.bandwidth())
-                    .attr("y", d=>hbar_yScale(d.country))
-                    .attr("fill", "#5F6F52")
+            let vbar_xAxis = d3.axisBottom()
+                .scale(vbar_xScale)
+                .tickValues(vbar_xScale.domain().filter(function(d,i){ return !(i%5)}))
+            
+            vis.sideSvg4.append("g")
+                .attr("class", "x-axis axis")
+                .attr("transform", "translate(0," + vis.sideHeight2 + ")");
 
-                // Draw horizontal bar labels
-                vis.hbarlabels = vis.sideSvg1.selectAll(".bar-label")
-                    .data(asylumData)
+            vis.sideSvg4.select(".x-axis")
+                .transition()
+                .duration(750)
+                .call(vbar_xAxis)
 
-                vis.hbarlabels.exit().remove()
-                
-                vis.hbarlabels.enter()
-                    .append("text")
-                    .merge(vis.hbarlabels)
-                    .transition()
-                    .duration(750)
-                    .attr("class", "bar-label")
-                    .attr("x", d=> hbar_xScale(d.value) + 3)
-                    .attr("y", d=> hbar_yScale(d.country) + hbar_yScale.bandwidth()/2 + 3)
-                    .text(d=> d.value)
+            let vbar_yScale = d3.scaleLinear()
+                .domain([0, d3.max(totalByYear, d=>d.value)])
+                .range([vis.sideHeight2,0])
 
-                // second graph 
-                vis.sideSvg2.selectAll("rect.frac-bar").remove()
-                d3.select('#side-title2').text(`Refugees from ${d.properties.name} over time`)
+            let vbar_yAxis = d3.axisLeft()
+                .scale(vbar_yScale)
+                .ticks(5)
+            
+            vis.sideSvg4.append("g")
+                .attr("class", "y-axis axis");
 
-                // group by year
-                let dataByYear = Array.from(d3.rollup(countryData, v=> d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d.Year), ([year, value])=>({year, value}))
-                dataByYear.sort(function(a,b) {return a.year - b.year})
+            vis.sideSvg4.select(".y-axis")
+                .transition()
+                .duration(750)
+                .call(vbar_yAxis)
 
-                // vertical bar graph axes
-                let vbar_xScale = d3.scaleBand()
-                    .rangeRound([0, vis.sideWidth2])
-                    .paddingInner(0.1)
-                    .domain(dataByYear.map(d=>vis.formatDate(d.year)))
-                    
-                let vbar_xAxis = d3.axisBottom()
-                    .scale(vbar_xScale)
-                    .tickValues(vbar_xScale.domain().filter(function(d,i){ return !(i%5)}))
-                
-                vis.sideSvg2.append("g")
-                    .attr("class", "x-axis axis")
-                    .attr("transform", "translate(0," + vis.sideHeight2 + ")");
+            // draw vertical bars
+            vis.vbars = vis.sideSvg4.selectAll("rect.main-bar")
+                .data(totalByYear)
+            
+            vis.vbars.exit().remove()
 
-                vis.sideSvg2.select(".x-axis")
-                    .transition()
-                    .duration(750)
-                    .call(vbar_xAxis)
+            vis.vbars.enter()
+                .append("rect")
+                .merge(vis.vbars)
+                .transition()
+                .duration(750)
+                .attr("class", "main-bar")
+                .attr("width", vbar_xScale.bandwidth())
+                .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
+                .attr("x", d => vbar_xScale(d.year))
+                .attr("y", d=>vbar_yScale(d.value))
+                .attr("fill", "#5F6F52")
+            
+            vis.fracBars = vis.sideSvg4.selectAll(".frac-bar")
+                .data(acceptedByYear)
+            
+            vis.fracBars.exit().remove()
 
-                let vbar_yScale = d3.scaleLinear()
-                    .domain([0, d3.max(dataByYear, d=>d.value)])
-                    .range([vis.sideHeight2,0])
+            vis.fracBars.enter()
+                .append("rect")
+                .merge(vis.fracBars)
+                .transition()
+                .duration(750)
+                .attr("class", "frac-bar")
+                .attr("width", vbar_xScale.bandwidth())
+                .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
+                .attr("x", d => vbar_xScale(d.year))
+                .attr("y", d=>vbar_yScale(d.value))
+                .attr("fill", "#A9B388")
+            
+            vis.sideSvg4.append("rect")
+                .attr("class", "asylum-legend")
+                .attr("fill", "#A9B388")
+                .attr("y", -15)
+                .attr("x", 5)
+                .attr("width", 15)
+                .attr("height", 15)
 
-                let vbar_yAxis = d3.axisLeft()
-                    .scale(vbar_yScale)
-                    .ticks(5)
-                
-                vis.sideSvg2.append("g")
-                    .attr("class", "y-axis axis");
+            vis.sideSvg4.append("rect")
+                .attr("class", "asylum-legend")
+                .attr("fill", "#5F6F52")
+                .attr("y", -15)
+                .attr("x", 100)
+                .attr("width", 15)
+                .attr("height", 15)
 
-                vis.sideSvg2.select(".y-axis")
-                    .transition()
-                    .duration(750)
-                    .call(vbar_yAxis)
+            vis.sideSvg4.append("text")
+                .attr("y", -5)
+                .attr("x", 25)
+                .attr("class", "bar-label asylum-legend")
+                .text("Recognized")
 
-                // draw vertical bars
-                vis.vbars = vis.sideSvg2.selectAll("rect.main-bar")
-                    .data(dataByYear)
-                
-                vis.vbars.exit().remove()
-
-                vis.vbars.enter()
-                    .append("rect")
-                    .merge(vis.vbars)
-                    .transition()
-                    .duration(750)
-                    .attr("class", "main-bar")
-                    .attr("width", vbar_xScale.bandwidth())
-                    .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
-                    .attr("x", d => vbar_xScale(vis.formatDate(d.year)))
-                    .attr("y", d=>vbar_yScale(d.value))
-                    .attr("fill", "#5F6F52")
-
-            } else if (vis.selected_cat == "Country of asylum") {
-                d3.select('#side-title1').text(`Where refugees seeking asylum in ${d.properties.name} are originally from`)
-
-                // Get origin country numbers
-                let originData = Array.from(d3.rollup(countryData, v=> d3.sum(v, d=>d["Refugees under UNHCR's mandate"]), d=>d["Country of origin"]), ([country, value]) => ({country, value}))
-                originData.sort(function(a,b) {return b.value - a.value})
-                originData = originData.slice(0,5)
-                originData = originData.filter(d=>{return (d.value > 0)})
-
-                // bar graph axes
-                let hbar_xScale = d3.scaleLinear()
-                    .range([0, vis.sideWidth1])
-                    .domain([0, d3.max(originData, d=>d.value)])
-
-                let hbar_yScale = d3.scaleBand()
-                    .domain(originData.map(d=>d.country))
-                    .rangeRound([0,vis.sideHeight1])
-                    .paddingInner(0.1)
-
-                let yAxis = d3.axisLeft()
-                    .scale(hbar_yScale)
-                
-                vis.sideSvg1.append("g")
-                    .attr("class", "y-axis axis");
-
-                vis.sideSvg1.select(".y-axis")
-                    .transition()
-                    .duration(750)
-                    .call(yAxis)
-
-                // Draw bars
-                vis.hbars = vis.sideSvg1.selectAll("rect")
-                    .data(originData)
-
-                vis.hbars.exit().remove()
-                
-                vis.hbars.enter()
-                    .append("rect")
-                    .merge(vis.hbars)
-                    .transition()
-                    .duration(750)
-                    .attr("width", d=>hbar_xScale(d.value))
-                    .attr("height", hbar_yScale.bandwidth())
-                    .attr("y", d=>hbar_yScale(d.country))
-                    .attr("fill", "#5F6F52")
-
-                // Draw bar labels
-                vis.hbarlabels = vis.sideSvg1.selectAll(".bar-label")
-                    .data(originData)
-
-                vis.hbarlabels.exit().remove()
-                
-                vis.hbarlabels.enter()
-                    .append("text")
-                    .merge(vis.hbarlabels)
-                    .transition()
-                    .duration(750)
-                    .attr("class", "bar-label")
-                    .attr("x", d=> hbar_xScale(d.value) + 3)
-                    .attr("y", d=> hbar_yScale(d.country) + hbar_yScale.bandwidth()/2 + 3)
-                    .text(d=> d.value)
-
-                d3.select('#side-title2').text(`Asylum applications and status in ${d.properties.name} over time`)
-
-                let countryCode = countryData[0]["Country of asylum (ISO)"]
-                let countryDecisions = vis.decisionData.filter(d=>{return (d["Country of asylum (ISO)"] == countryCode) && (vis.parseDate(d.Year) >= vis.min_date) && (vis.parseDate(d.Year) <= vis.max_date)})
-
-                console.log(countryDecisions)
-
-                // group by year
-                let totalByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Total decisions"]), d=>d.Year), ([year, value])=>({year, value}))
-                let acceptedByYear = Array.from(d3.rollup(countryDecisions, v=> d3.sum(v, d=>d["Recognized decisions"]), d=>d.Year), ([year, value])=>({year, value}))
-
-                totalByYear.sort(function(a,b) {return vis.parseDate(a.year) - vis.parseDate(b.year)})
-                acceptedByYear.sort(function(a,b) {return vis.parseDate(a.year) - vis.parseDate(b.year)})
-
-                console.log(totalByYear)
-
-                // vertical bar graph axes
-                let vbar_xScale = d3.scaleBand()
-                    .rangeRound([0, vis.sideWidth2])
-                    .paddingInner(0.1)
-                    .domain(totalByYear.map(d=>d.year))
-                    
-                let vbar_xAxis = d3.axisBottom()
-                    .scale(vbar_xScale)
-                    .tickValues(vbar_xScale.domain().filter(function(d,i){ return !(i%5)}))
-                
-                vis.sideSvg2.append("g")
-                    .attr("class", "x-axis axis")
-                    .attr("transform", "translate(0," + vis.sideHeight2 + ")");
-
-                vis.sideSvg2.select(".x-axis")
-                    .transition()
-                    .duration(750)
-                    .call(vbar_xAxis)
-
-                let vbar_yScale = d3.scaleLinear()
-                    .domain([0, d3.max(totalByYear, d=>d.value)])
-                    .range([vis.sideHeight2,0])
-
-                let vbar_yAxis = d3.axisLeft()
-                    .scale(vbar_yScale)
-                    .ticks(5)
-                
-                vis.sideSvg2.append("g")
-                    .attr("class", "y-axis axis");
-
-                vis.sideSvg2.select(".y-axis")
-                    .transition()
-                    .duration(750)
-                    .call(vbar_yAxis)
-
-                // draw vertical bars
-                vis.vbars = vis.sideSvg2.selectAll("rect.main-bar")
-                    .data(totalByYear)
-                
-                vis.vbars.exit().remove()
-
-                vis.vbars.enter()
-                    .append("rect")
-                    .merge(vis.vbars)
-                    .transition()
-                    .duration(750)
-                    .attr("class", "main-bar")
-                    .attr("width", vbar_xScale.bandwidth())
-                    .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
-                    .attr("x", d => vbar_xScale(d.year))
-                    .attr("y", d=>vbar_yScale(d.value))
-                    .attr("fill", "#5F6F52")
-                
-                vis.fracBars = vis.sideSvg2.selectAll(".frac-bar")
-                    .data(acceptedByYear)
-                
-                vis.fracBars.exit().remove()
-
-                vis.fracBars.enter()
-                    .append("rect")
-                    .merge(vis.fracBars)
-                    .transition()
-                    .duration(750)
-                    .attr("class", "frac-bar")
-                    .attr("width", vbar_xScale.bandwidth())
-                    .attr("height", d=>vis.sideHeight2 - vbar_yScale(d.value))
-                    .attr("x", d => vbar_xScale(d.year))
-                    .attr("y", d=>vbar_yScale(d.value))
-                    .attr("fill", "#A9B388")
-                
-                vis.sideSvg2.append("rect")
-                    .attr("class", "asylum-legend")
-                    .attr("fill", "#A9B388")
-                    .attr("y", -15)
-                    .attr("x", 5)
-                    .attr("width", 15)
-                    .attr("height", 15)
-
-                vis.sideSvg2.append("rect")
-                    .attr("class", "asylum-legend")
-                    .attr("fill", "#5F6F52")
-                    .attr("y", -15)
-                    .attr("x", 100)
-                    .attr("width", 15)
-                    .attr("height", 15)
-
-                vis.sideSvg2.append("text")
-                    .attr("y", -5)
-                    .attr("x", 25)
-                    .attr("class", "bar-label asylum-legend")
-                    .text("Recognized")
-
-                vis.sideSvg2.append("text")
-                    .attr("y", -5)
-                    .attr("x", 120)
-                    .attr("class", "bar-label asylum-legend")
-                    .text("Not Recognized")
-                    
+            vis.sideSvg4.append("text")
+                .attr("y", -5)
+                .attr("x", 120)
+                .attr("class", "bar-label asylum-legend")
+                .text("Not Recognized")
             }
         }
 
