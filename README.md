@@ -7,7 +7,7 @@ It uses an interactive storytelling approach to raise awareness of the refugee c
 **Team Members**: Clara Chen, Taylor Fang
 
 * URL to website: [https://cchen2125.github.io/cs171-refugee-crisis/](https://cchen2125.github.io/cs171-refugee-crisis/)
-* URL to video: X
+* URL to video: [https://youtu.be/yKH8l5SqJUA](https://youtu.be/yKH8l5SqJUA)
 * Process Book: [https://docs.google.com/document/d/1P12H7F17XzUsfqX8sPPzvUxVMHjt_plFDdUFQl1d3TM/edit?usp=sharing](https://docs.google.com/document/d/1P12H7F17XzUsfqX8sPPzvUxVMHjt_plFDdUFQl1d3TM/edit?usp=sharing)
 
 **Note: This project is optimized for desktop and Google Chrome.**
