@@ -80,22 +80,24 @@ class MultLineVis {
     wrangleData() {
         let vis=this;
 
+        // time formating functions
         vis.parseTime = d3.timeParse("%Y")
         vis.formatDate = d3.timeFormat("%Y");
         
+        // format date
         vis.data.forEach(function(d) {
             d.Year = vis.parseTime(d.Year);
         })
 
         vis.data = vis.data.filter(d => {return (d.Year >= vis.parseTime(2012))})
 
-        console.log(vis.data)
-
+        // aggregate data by country
         vis.dataByCountry = Array.from(d3.group(vis.data, d=>d["Country of origin"]), ([key, value]) => ({key, value}))
 
         vis.displayData = {}
         vis.sumstat = []
 
+        // restructure data for visualizing
         vis.dataByCountry.forEach(country => {
             vis.displayData[country.key] = {
                 id: country.key,

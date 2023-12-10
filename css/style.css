@@ -1,4 +1,6 @@
-/* Text */
+/* * * * * * * * * * * * * *
+*          Text           *
+* * * * * * * * * * * * * */
 
 body {
     font-family: 'Lato', sans-serif;
@@ -126,7 +128,9 @@ li {
     text-align: center;
 }
 
-/* Sections */
+/* * * * * * * * * * * * * *
+*          Sections        *
+* * * * * * * * * * * * * */
 
 .section {
     padding: 2vw;
@@ -247,7 +251,9 @@ li {
     margin-right: 7vw;
 }
 
-/* Interactions */
+/* * * * * * * * * * * * * *
+*       Interactions       *
+* * * * * * * * * * * * * */
 
 .tooltip {
     border: thin solid black;

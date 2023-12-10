@@ -109,10 +109,12 @@ function checkAnswerAsylum() {
     }
 }
 
+// function for scatter axis change
 function categoryChange() {
     myScatterVis.updateVis();
 }
 
+// function for toggling country of origin and asylum on map
 function activateButton(button) {
     const buttons = document.querySelectorAll('.map-button');
     buttons.forEach(button => {
@@ -123,10 +125,12 @@ function activateButton(button) {
     myMapVis.wrangleData()
 }
 
+// function to update map colors
 function updateMap() {
     myMapVis.wrangleData()
 }
 
+// function for map time slider
 function makeSlider() {
     // get slider
     myMapVis.slider = document.getElementById('time-period-slider')

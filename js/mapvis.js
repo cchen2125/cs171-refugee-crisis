@@ -40,7 +40,7 @@ class MapVis {
             .attr('class', "tooltip")
             .attr('id', 'mapTooltip');
 
-        // TODO: create map projection
+        // create map projection
         vis.projection = d3.geoNaturalEarth1()
             .scale(scale)
             .translate([0.45*vis.width, 0.58*vis.height ]);
@@ -65,8 +65,6 @@ class MapVis {
         // color scale
         vis.colorScale = d3.scaleSequential(d3.interpolateLab("white", "#425930"))
             .domain([0, vis.width * 0.2])
-
-        // TODO: fix legend
 
         // Create a legend group and position it
         vis.legend = vis.svg.append("g")
@@ -110,7 +108,6 @@ class MapVis {
             .attr("y", 0)
             .attr("fill", "url(#gradient)")
 
-        //TODO: drag and zoom
         //create zoom handler
         vis.zoom = d3.zoom()
             .scaleExtent([1, 8])
@@ -130,6 +127,7 @@ class MapVis {
         // sidebar functionality
         vis.selectedCountry = "none"
 
+        // initialize svgs
         vis.sideMargin1 = {top: 10, right: 60, bottom: 10, left: 120}
         vis.sideWidth1 = document.getElementById('side-graph1').getBoundingClientRect().width - vis.sideMargin1.left - vis.sideMargin1.right
         vis.sideHeight1 = document.getElementById('side-graph1').getBoundingClientRect().height - vis.sideMargin1.top - vis.sideMargin1.bottom
@@ -550,11 +548,13 @@ class MapVis {
     updateVis() {
         let vis = this;
 
+        // reset scale domains
         let maxval = Math.log(d3.max(vis.dataByCountry, d=> d.value) + 1e-10) / Math.log(10);
 
         vis.colorScale.domain([0,maxval])
         vis.legendScale.domain([0, maxval])
 
+        // Color the countries
         vis.countries
             .transition()
             .duration(750)
