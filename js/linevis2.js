@@ -154,7 +154,7 @@ class LineVis {
         let path = vis.svg.append("path")
             .attr("class", "line")
             .attr("fill", "none")
-            .attr("stroke", "maroon")
+            .attr("stroke", "#425930")
             .attr("stroke-width", 2)
         
         path.datum(vis.data)
@@ -172,6 +172,6 @@ class LineVis {
             .attr("cx", d=>vis.x(d.Year))
             .attr("cy", d=>vis.y(d["Refugees under UNHCR's mandate"]))
             .attr("r", 3)
-            .attr("fill", "maroon")
+            .attr("fill", "#425930")
     }
 }

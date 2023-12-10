@@ -42,7 +42,7 @@
         <div class="section style2">
             <h1 class="slide-text">
                 <span>
-                    As of May 2023, over 110 million people were living forcibly displaced from their home, due to conflict, persecution, or violence. 
+                    Right now, more people have been forced to flee their homes than ever before. Over 110 million people are living forcibly displaced due to conflict, persecution, or violence. 
                 </span>
                 <br>
                 <br>
@@ -63,12 +63,12 @@
                     </span>
                 </div>
                 <br>
-                <span data-aos="fade-up" data-aos-delay="1500">
+                <span data-aos="fade-up" data-aos-delay="1000">
                     But have you heard about this in the news? What do you know about refugees and displaced peoples in our world?  
                 </span>
                 <br>
                 <br>
-                <span data-aos="fade-up" data-aos-delay="2500">
+                <span data-aos="fade-up" data-aos-delay="2300">
                     Let's find out.
                 </span>
             </h1>
@@ -109,10 +109,13 @@
             </div>
         </div>
 
-        <div class="section style2">
+        <div class="section style2" id="syria">
             <div class="row">
-                <div class="col-md-12 heading">
+                <div class="col-5">
                     <h2>The number of Syrian refugees has been the highest every year since 2014. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines.</h2>
+                </div>
+                <div class="col-5">
+                    <h2>Syrians account for almost 1 in 5 refugees globally, with 6.5 million hosted in 131 countries. There are another 6.8 million who are internally displaced</h2>
                 </div>
             </div>
         </div>
@@ -120,13 +123,13 @@
         <div class="section style1">
             <h1 class="slide-text">
                 <span>
-                    What about this:
+                    Next question:
                 </span>
             </h1>
             <div data-aos="fade-up" data-aos-delay="500">
                 <h1 class="slide-text">
                     <br>
-                    <span>Which country accepts the most applications from asylum seekers?</span>
+                    <span>Which country <span style="font-style: italic;">accepts</span> the most applications from asylum seekers?</span>
                 </h1>
                 <div class="row form-group guess-section">
                     <div class="col-auto">
@@ -154,7 +157,9 @@
                     <div id="barvis"></div>
                 </div>
                 <div class="col-3 explanation" data-aos="fade-up" data-aos-delay="400">
-                    <p>Keep scrolling to see more context on these asylum decisions.</p>
+                    <p>Asylum is a form of protection which allows an individual to remain in a country rather than being removed (deported) to a country where he or she fears persecution or harm.</p>
+                    <br>
+                    <p>Keep scrolling to see more context on these asylum decisions to help refugees.</p>
                 </div>
             </div>
         </div>
@@ -162,13 +167,13 @@
         <div class="section style2 id="bubble-section">
             <div class="row" data-aos="fade-up" data-aos-delay="300">
                 <div class="col-12">
-                    <h1 class="slide-text">Here are the number of total asylum application decisions compared with the accepted decisions:</h1>
+                    <h1 class="slide-text">Here are the number of total asylum application decisions compared with the number of accepted decisions:</h1>
                 </div>
                 <div class="col-7">
                     <div id="bubblevis"></div>
                 </div>
                 <div class="col-3 explanation">
-                    <p>The darker inner circles show recognized decisions as a percentage of overall dcisions, over the time period of UNHCR tracking</p>
+                    <p>The darker inner circles show recognized decisions as a percentage of overall dcisions, over the time period of UNHCR tracking.</p>
                 </div>
             </div>
         </div>
@@ -176,11 +181,11 @@
         <div class="section style2">
             <h1 class="slide-text">
                 <span>
-                    You might have noticed the top countries are not necessarily
+                    You might have noticed the countries that provide the most shelter are not necessarily those with the 
                 </span>
                 <br>
                 <span>
-                    those with the most economic resources.
+                    most economic resources. In fact, a few countries take responsibility for most of the world’s refugees.
                 </span>
             </h1>
             <div class="row">
@@ -200,7 +205,7 @@
                     </p>
                     <br>
                     <div data-aos="fade-up" data-aos-delay="1000">
-                        <h5 id="toggle-text">Toggle to see more relationships with asylum acceptances:</h5>
+                        <h5 id="toggle-text"><strong>Toggle</strong> to see more relationships with asylum acceptances:</h5>
                         <select id="select-box" class="form-control rounded" onchange="categoryChange()">
                             <option value="gdp">GDP (in USD)</option>
                             <option value="growth">GDP Growth (Annual %)</option>
@@ -218,7 +223,9 @@
                 <h1 class="slide-text">Explore the map for yourself</h1>
                 <p>Use the filters to toggle between displaying refugees, internally displaced persons (IDPs), or others of concern by country of origin or country asylum. Click on a country for more information on its refugee and asylum application trends.</p>
                 <i>Keep scrolling</i>
-                <img src="img/arrow.png" style="height: 1.5em; width: 5em;">
+                <a href="#section12"> 
+                    <img src="img/arrow.png" style="height: 1.5em; width: 5em;">
+                </a>
             </div>
         </div>
    
@@ -288,26 +295,39 @@
             <h1 class="slide-text">The refugee crisis is currently worse than ever before.</h1>
             <div id="final-vis"></div>
         </div>
-        
+
         <div class="section style1">
-            <h3>
-                Data Sources: 
-            </h3>
-            <ul>
-                <li>UNHCR Data: <a href="https://www.unhcr.org/refugee-statistics/">https://www.unhcr.org/refugee-statistics/</a></li>
-                <li>World Bank Data: <a href="https://data.worldbank.org/">https://data.worldbank.org/</a></li>
-                <li>About UNHCR: <a href="https://www.unhcr.org/about-unhcr">https://www.unhcr.org/about-unhcr</a></li>
-            </ul>
-            <h3>
-                Research Sources: 
-            </h3>
-            <ul>
-                <li>UN Refugees "Five Takeaways from the 2022 UNHCR Global Trends Report": <a href="https://www.unrefugees.org/news/five-takeaways-from-the-2022-unhcr-global-trends-report/">https://www.unrefugees.org/news/five-takeaways-from-the-2022-unhcr-global-trends-report/</a></li>
-                <li>UN News "UNHCR calls for concerted action as forced displacement hits new high of 110 million": <a href="https://news.un.org/en/story/2023/06/1137652">https://news.un.org/en/story/2023/06/1137652</a></li>
-                <li>International Rescue Committee "110 million people displaced around the world: get the facts" <a href="https://www.rescue.org/article/110-million-people-displaced-around-world-get-facts">https://www.rescue.org/article/110-million-people-displaced-around-world-get-facts</a></li>
-                <li>Norweigan Refugee Council "A few countries take responsibility for most of the world’s refugees" <a href="https://www.nrc.no/shorthand/fr/a-few-countries-take-responsibility-for-most-of-the-worlds-refugees/index.html">https://www.nrc.no/shorthand/fr/a-few-countries-take-responsibility-for-most-of-the-worlds-refugees/index.html</a></li>
-            </ul>
+            <div id="sources">
+                <h3>
+                    Data Sources: 
+                </h3>
+                <ul>
+                    <li>UNHCR (United Nations High Commissioner for Refugees) Refugee Population Statistics Database <a href="https://www.unhcr.org/refugee-statistics/">https://www.unhcr.org/refugee-statistics/</a></li>
+                    <li>World Bank Open Data on World Development Indicators: <a href="https://data.worldbank.org/">https://data.worldbank.org/</a></li>
+                    <li>About UNHCR: <a href="https://www.unhcr.org/about-unhcr">https://www.unhcr.org/about-unhcr</a></li>
+                </ul>
+                <br>
+                <h3>
+                    Research Sources: 
+                </h3>
+                <ul>
+                    <li>UN Refugees "Five Takeaways from the 2022 UNHCR Global Trends Report": <a href="https://www.unrefugees.org/news/five-takeaways-from-the-2022-unhcr-global-trends-report/">https://www.unrefugees.org/news/five-takeaways-from-the-2022-unhcr-global-trends-report/</a></li>
+                    <li>UN News "UNHCR calls for concerted action as forced displacement hits new high of 110 million": <a href="https://news.un.org/en/story/2023/06/1137652">https://news.un.org/en/story/2023/06/1137652</a></li>
+                    <li>International Rescue Committee "110 million people displaced around the world: get the facts" <a href="https://www.rescue.org/article/110-million-people-displaced-around-world-get-facts">https://www.rescue.org/article/110-million-people-displaced-around-world-get-facts</a></li>
+                    <li>Norweigan Refugee Council "A few countries take responsibility for most of the world’s refugees" <a href="https://www.nrc.no/shorthand/fr/a-few-countries-take-responsibility-for-most-of-the-worlds-refugees/index.html">https://www.nrc.no/shorthand/fr/a-few-countries-take-responsibility-for-most-of-the-worlds-refugees/index.html</a></li>
+                    <li>UNHCR USA "What is asylum?" <a href="https://help.unhcr.org/usa/applying-for-asylum/what-is-asylum/">https://help.unhcr.org/usa/applying-for-asylum/what-is-asylum/</a></li>
+                </ul>
+            </div>
         </div>
+
+        <div class="section style1">
+            <h1 class="slide-text">About</h1>
+            <div>
+                <p>This project was created by Clara Chen and Taylor Fang for the CS 171 Final Project.</p>
+                <p>Special thank you to our teachers, Hanspeter Pfister and Johanna Beyer, to our mentor, Richard Morello, and to the many helpful class TFs.</p>
+            </div>
+        </div>
+
     </div>
 
 <!-- Load JS libraries -->
@@ -335,8 +355,8 @@
         licenseKey: 'gplv3-license',
         autoScrolling: true,
         navigation: true,
-        anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11", "section12", "section13", "section14"],
-        navigationTooltips: ['Title', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'Sources'],
+        anchors: ["Start", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11", "section12", "section13", "Sources", "About"],
+        navigationTooltips: ['Start', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'Sources', 'About'],
         css3: false,
         afterLoad: function (origin, destination, direction, trigger) {
             // Necessary for AOS to work:

@@ -105,10 +105,7 @@ function checkAnswerAsylum() {
         document.getElementById("asylum-temp-text").style.display = "none";
 
         newsection = parseInt(location.href.slice(location.href.length - 1, location.href.length)) + 1
-        console.log(newsection)
         location.href = location.href.slice(0, location.href.length - 1) + newsection  
-        console.log(location.href)
-
     }
 }
 
