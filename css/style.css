@@ -281,7 +281,9 @@ li {
 
 #linevis-description {
     width: 75vw;
-    font-size:smaller;
+    font-size:x-small;
+    text-align: left;
+    padding-top: 1em;
 }
 
 

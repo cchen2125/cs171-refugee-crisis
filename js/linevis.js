@@ -10,7 +10,7 @@ class MultLineVis {
     initVis() {
         let vis=this;
 
-        vis.margin = { top: 30, right: 180, bottom: 30, left: 60 };
+        vis.margin = { top: 10, right: 180, bottom: 30, left: 80 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
@@ -44,18 +44,21 @@ class MultLineVis {
         // axis labels
         vis.svg.append("text")
             .attr("class", "y-axis-label")
-            .attr("x", -vis.margin.left)
-            .attr("y", -5)
+            .attr("x", -vis.height * 0.5)
+            .attr("y", -vis.margin.left + 15)
             .attr("fill", "black")
             .attr("font-size", 15)
+            .attr("transform", "rotate(-90)")
+            .attr("text-anchor", "middle")
             .text("Refugees Under UNHCR Mandate*")
 
         vis.svg.append("text")
             .attr("class", "x-axis-label")
-            .attr("x", vis.width+10)
-            .attr("y", vis.height+5)
+            .attr("x", vis.width * 0.5)
+            .attr("y", vis.height+25)
             .attr("fill", "black")
             .attr("font-size", 15)
+            .attr("text-anchor", "middle")
             .text("Year")
 
         // Color scale setup

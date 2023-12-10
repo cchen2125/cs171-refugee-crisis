@@ -9,7 +9,7 @@ class LineVis {
     initVis() {
         let vis = this;
 
-        vis.margin = { top: 30, right: 100, bottom: 20, left: 100 };
+        vis.margin = { top: 30, right: 100, bottom: 30, left: 100 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
@@ -43,18 +43,19 @@ class LineVis {
         // axis labels
         vis.svg.append("text")
             .attr("class", "y-axis-label")
-            .attr("x", -vis.margin.left)
-            .attr("y", -5)
-            .attr("fill", "gray")
+            .attr("x", -vis.height * 0.5)
+            .attr("y", -vis.margin.left + 15)
             .attr("font-size", 15)
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
             .text("Refugees Under UNHCR Mandate")
 
         vis.svg.append("text")
             .attr("class", "x-axis-label")
-            .attr("x", vis.width+10)
-            .attr("y", vis.height+5)
-            .attr("fill", "gray")
+            .attr("x", vis.width * 0.5)
+            .attr("y", vis.height+25)
             .attr("font-size", 15)
+            .attr("text-anchor", "middle")
             .text("Year")
 
         // tooltip
