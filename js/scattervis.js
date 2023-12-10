@@ -75,7 +75,7 @@ class ScatterVis {
 
         // Functions to show/update tooltip
         vis.showTooltip = function(event, d, context) {
-            d3.select(context).select(".dots")
+            d3.select(context).select(".dot")
                 .attr("fill", '#EFE9E9')
             vis.tooltip
                 .transition()
@@ -96,7 +96,7 @@ class ScatterVis {
         };
         
         vis.hideTooltip = function(event, d, context) {
-            d3.select(context).select(".dots")
+            d3.select(context).select(".dot")
                 .attr("fill", '#5F6F52')
             vis.tooltip
                 .transition()
@@ -222,8 +222,8 @@ class ScatterVis {
         // Append circles to the merged selection 
         dots.append("circle")
             .attr("fill-opacity", 1)
-            .attr("fill", '#5F6F52')
-            .attr("class", "dots")
+            .attr("fill", '#5F6F62')
+            .attr("class", "dot")
             .attr("r", d => vis.z(d[1].recognizedDecisions));
 
         // Update selection
