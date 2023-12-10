@@ -78,7 +78,7 @@ class MapVis {
             .attr("stroke-opacity", 0.25);
 
         // color scale
-        vis.colorScale = d3.scaleSequential(d3.interpolateLab("white", "maroon"))
+        vis.colorScale = d3.scaleSequential(d3.interpolateLab("white", "#425930"))
             .domain([0, vis.width * 0.25])
 
         // TODO: fix legend

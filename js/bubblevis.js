@@ -10,20 +10,20 @@ class BubbleVis {
     initVis() {
         let vis= this;
 
-        vis.margin = {top: 0, right: 150, bottom: 10, left: 20};
+        vis.margin = {top: 0, right: 150, bottom: 0, left: 20};
         vis.width = 660;
-        vis.height = 640;
+        vis.height = 560;
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
             .attr("width", vis.width + vis.margin.left + vis.margin.right)
             .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
-            .attr("transform", "translate(" + (60) + "," + (-30) + ")")
+            .attr("transform", "translate(" + (130) + "," + (-45) + ")")
             .append("g");
 
         // Set up the pack layout
         vis.pack = d3.pack()
-            .size([vis.width, vis.height])
+            .size([vis.width - 20, vis.height + 30])
             .padding(3);
 
         // Create a tooltip div
@@ -36,7 +36,7 @@ class BubbleVis {
         // Functions to show/update tooltip
         vis.showTooltip = function(event, d, context) {
             d3.select(context).select(".inner-circle")
-                .attr("fill", 'darkorange')
+                .attr("fill", '#5F6F52')
             vis.tooltip
                 .transition()
                 .style("opacity", 1)
@@ -57,7 +57,7 @@ class BubbleVis {
         
         vis.hideTooltip = function(event, d, context) {
             d3.select(context).select(".inner-circle")
-                .attr("fill", 'orange')
+                .attr("fill", '#83A665')
             vis.tooltip
                 .transition()
                 .duration(200)
@@ -146,15 +146,15 @@ class BubbleVis {
         // Add a filled circle for total decisions.
         node.append("circle")
             .attr("fill-opacity", 0.6)
-            .attr("fill", 'orange')
+            .attr("fill", '#96AF81')
             .attr("r", d => d.r);
 
         // Add a smaller circle for recognized decisions.
         node.filter(d => d.data.recognizedDecisions !== undefined) // Filter to include only nodes with recognized decisions
             .append("circle")
-            .attr("fill-opacity", .9)
+            .attr("fill-opacity", .8)
             .attr("class", "inner-circle")
-            .attr("fill", 'orange') 
+            .attr("fill", '#83A665') 
             .attr("r", d => Math.sqrt(d.data.recognizedDecisions / d.data.totalDecisions) * d.r);
 
         // Add text.
@@ -171,7 +171,7 @@ class BubbleVis {
         // Legend group
         vis.legend = vis.svg.append("g")
             .attr("class", "legend")
-            .attr("transform", "translate(29, 3)");
+            .attr("transform", "translate(29, 17)");
 
         // Add a scale for bubble size
         vis.z = d3.scaleSqrt()
@@ -190,7 +190,7 @@ class BubbleVis {
             .append("circle")
             .attr("class", "legend-circle")
             .attr("cx", xCircle) 
-            .attr("cy", (d, i) => vis.height - 50 - vis.z(d)) 
+            .attr("cy", (d, i) => vis.height - 47 - vis.z(d)) 
             .attr("r", d => vis.z(d)) 
             .attr("fill", "none") 
             .attr("stroke", "black") 
@@ -204,8 +204,8 @@ class BubbleVis {
             .attr("class", "legend-segment")
             .attr("x1", (d) => xCircle + vis.z(d) + 27)
             .attr("x2", xLabel + 3)
-            .attr("y1", (d, i) => vis.height - 48 - vis.z(d))
-            .attr("y2", (d, i) => vis.height - 48 - vis.z(d))
+            .attr("y1", (d, i) => vis.height - 47 - vis.z(d))
+            .attr("y2", (d, i) => vis.height - 47 - vis.z(d))
             .attr("stroke", "black")
             .style("stroke-dasharray", "2,2");
 
@@ -215,15 +215,15 @@ class BubbleVis {
             .enter()
             .append("text")
             .attr("class", "legend-label")
-            .attr("x", xLabel - 19) 
-            .attr("y", (d, i) => vis.height - 49 - vis.z(d)) 
+            .attr("x", xLabel - 21) 
+            .attr("y", (d, i) => vis.height - 61 - vis.z(d)) 
             .text((d) => `${d3.format(",")(d)}`)
             .style("font-size", "8px");
 
         // Add legend title
         vis.legend.append("text")
             .attr('x', xCircle)
-            .attr("y", vis.height - 29)
+            .attr("y", vis.height - 26)
             .text("# of Asylum Decisions")
             .attr("text-anchor", "middle")
             .style("font-size", "13px");

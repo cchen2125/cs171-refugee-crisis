@@ -47,7 +47,7 @@ class LineVis {
             .attr("class", "y-axis-label")
             .attr("x", -vis.margin.left)
             .attr("y", -5)
-            .attr("fill", "white")
+            .attr("fill", "black")
             .attr("font-size", 15)
             .text("Refugees Under UNHCR Mandate*")
 
@@ -55,7 +55,7 @@ class LineVis {
             .attr("class", "x-axis-label")
             .attr("x", vis.width+10)
             .attr("y", vis.height+5)
-            .attr("fill", "white")
+            .attr("fill", "black")
             .attr("font-size", 15)
             .text("Year")
 
@@ -63,8 +63,8 @@ class LineVis {
         vis.highlight = ["Syria", "Afghanistan", "Ukraine", "S. Sudan", "Myanmar"]
 
         vis.color = d3.scaleOrdinal()
-            .range(d3.schemeTableau10)
-            .domain(vis.highlight)
+            .range(["#AB3100", "#498FA8", "#DFB70E", "#DD8B00", "#2C7B38"])
+            .domain(vis.highlight);
 
         // add tooltip
         vis.tooltip = d3.select("body").append('div')
@@ -262,7 +262,7 @@ class LineVis {
             .attr("class", "legend-label")
             .attr("x", vis.width+rectWidth+25)
             .attr("y", (d, i) => {return i*30+rectWidth / 2+5})
-            .attr("fill", 'white')
+            .attr("fill", 'black')
             .text(d=> d)
         
     }

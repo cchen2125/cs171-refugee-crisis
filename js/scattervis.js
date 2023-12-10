@@ -13,7 +13,7 @@ class ScatterVis {
 
         vis.margin = {top: 40, right: 10, bottom: 10, left: 40};
         vis.width = 900;
-        vis.height = 530;
+        vis.height = 550;
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -45,7 +45,7 @@ class ScatterVis {
 
         // Y axis
         vis.y = d3.scaleLinear()
-            .range([vis.height-80, 0]);
+            .range([vis.height-70, 0]);
 
         vis.svg.append("g")
             .attr("transform", `translate(20,0)`)
@@ -58,7 +58,7 @@ class ScatterVis {
         vis.svg.append("text")
             .attr("text-anchor", "end")
             .attr("x", 0)
-            .attr("y", -20 )
+            .attr("y", -28)
             .text("Asylum Acceptances (Total)")
             .attr("text-anchor", "start")
 
@@ -76,7 +76,7 @@ class ScatterVis {
         // Functions to show/update tooltip
         vis.showTooltip = function(event, d, context) {
             d3.select(context).select(".inner-circle")
-                .attr("fill", 'darkorange')
+                .attr("fill", '#5F6F52')
             vis.tooltip
                 .transition()
                 .style("opacity", 1)
@@ -97,7 +97,7 @@ class ScatterVis {
         
         vis.hideTooltip = function(event, d, context) {
             d3.select(context).select(".inner-circle")
-                .attr("fill", 'orange')
+                .attr("fill", '#5F6F52')
             vis.tooltip
                 .transition()
                 .duration(200)
@@ -242,7 +242,7 @@ class ScatterVis {
         // Append circles to the merged selection 
         dots.append("circle")
             .attr("fill-opacity", 1)
-            .attr("fill", 'orange')
+            .attr("fill", '#5F6F52')
             .attr("class", "dot")
             .attr("r", d => vis.z(d[1].recognizedDecisions));
 

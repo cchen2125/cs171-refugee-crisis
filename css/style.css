@@ -3,17 +3,16 @@ body {
     margin:0;
     padding:0;
     text-align: center;
+    overflow: hidden;
 }
 
-.container-fluid {
-    padding: 5vw;
-    text-align: center;
+a {
+    color: #F1DEC9;
+    font-style: italic;
 }
-
 
 .section {
-    padding-top: 2vw;
-    padding-bottom: 2vw;
+    padding: 2vw;
 }
 
 .tooltip {
@@ -34,6 +33,11 @@ body {
     font-size: 1.5em;
     font-weight: bold;
     color: #EFE9E9;
+}
+
+.sidetext {
+    text-align: left;
+    font-size: 1em;
 }
 
 #video{
@@ -83,12 +87,8 @@ body {
 }
 
 #scattervis {
-    height: 80vh;
+    height: 60vh;
     margin-left: 3vw;
-}
-
-#scattervis2 {
-    height: 80vh;
 }
 
 #time-period-slider {
@@ -110,7 +110,7 @@ body {
 }
 
 .noUi-connect {
-    background: maroon;
+    background: #5F6F52;
 }
 
 #guess-button, #asylum-guess-button {
@@ -119,7 +119,7 @@ body {
 }
 
 .style1 {
-    background-color: #B85C38;
+    background-color: #5F6F52;
     background-size: cover;
     color: #F1DEC9;
     display:flex;
@@ -226,7 +226,7 @@ body {
 }
 
 .map-side-text {
-    color: maroon;
+    color: #5F6F52;
     margin: 0;
     text-align: left;
     font-size: 0.8em;
@@ -238,7 +238,7 @@ body {
 }
 
 #resetButton {
-    background-color: maroon;
+    background-color: #5F6F52;
     color:#F1DEC9;
 }
 
@@ -250,11 +250,15 @@ body {
     font-size: 0.7em;
 }
 
-#bubblevis, #scattervis {
+#bubblevis {
+    height: 80vh;
+}
+
+#scattervis {
     height: 80vh;
 }
 
 #barvis {
-    height: 80vh;
+    height: 75vh;
     width: 55vw;
 }

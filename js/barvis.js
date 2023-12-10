@@ -10,9 +10,9 @@ class BarVis {
     initVis() {
         let vis= this;
 
-        vis.margin = {top: 10, right: 0, bottom: 40, left: 100};
-        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+        vis.margin = {top: 0, right: 0, bottom: 30, left: 100};
+        vis.width = 850;
+        vis.height = 460;
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -25,17 +25,17 @@ class BarVis {
         vis.x = d3.scaleLinear()
             .range([0, vis.width]);
 
-            // Create a tooltip div
+        // Create a tooltip div
         vis.tooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .attr("id", "bubbleTooltip")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .attr("id", "bubbleTooltip")
 
         // Functions to show/update tooltip
         vis.showTooltip = function(event, d, context) {
             d3.select(context).select(".bar")
-                .attr("fill", 'darkorange')
+                .attr("fill", '#5F6F52')
             vis.tooltip
                 .transition()
                 .style("opacity", 1)
@@ -54,7 +54,7 @@ class BarVis {
         
         vis.hideTooltip = function(event, d, context) {
             d3.select(context).select(".bar")
-                .attr("fill", 'orange')
+                .attr("fill", '#5F6F52')
             vis.tooltip
                 .transition()
                 .duration(200)
@@ -113,7 +113,6 @@ class BarVis {
             .range([0, vis.height - 15])
             .padding(0.01);
 
-
         // Add bars
         vis.svg.selectAll(".bar")
             .data(vis.data)
@@ -124,7 +123,7 @@ class BarVis {
             .attr("height", 16)
             .attr("x", 0)
             .attr("width", d => vis.x(d.recognizedDecisions))
-            .attr("fill", "orange")
+            .attr("fill", "#5F6F52")
             .on("mouseover", function (event, d) { vis.showTooltip(event, d, this); })
             .on("mousemove", function (event, d) { vis.moveTooltip(event, d, this); })
             .on("mouseleave", function (event, d) { vis.hideTooltip(event, d, this); });     ;
@@ -148,7 +147,7 @@ class BarVis {
             .text("Country");
 
         vis.svg.append("text")
-            .attr("transform", `translate(${vis.width / 2},${vis.height + vis.margin.top + 16})`)
+            .attr("transform", `translate(${vis.width / 2},${vis.height + vis.margin.top + 22})`)
             .style("text-anchor", "middle")
             .text("Total Recognized Asylum Decisions");
     }

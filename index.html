@@ -39,7 +39,7 @@
             </div>    
         </div>
    
-        <div class="section style1">
+        <div class="section style2">
             <h1 class="slide-text">
                 <span>
                     As of May 2023, over 110 million people were living forcibly displaced from their home, due to conflict, persecution, or violence. 
@@ -55,7 +55,7 @@
             </h1>
         </div>
    
-        <div class="section style2">
+        <div class="section style1">
             <h1 class="slide-text">
                 <div>
                     <span>
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <div class="section style1">
+        <div class="section style2">
             <div class="row" id="answer"></div>
             <div class="row" id="temp-text">
                 <h1 class="slide-text">Submit an answer above to see the line graph</h1>
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <div class="section style2 container-fluid">
+        <div class="section style2">
             <div class="row">
                 <div class="col-md-12 heading">
                     <h2>The number of Syrian refugees has been the highest every year since 2014. This might be surprising, since it hasn’t been mentioned in the recent news as frequently, and especially not in the headlines.</h2>
@@ -117,7 +117,7 @@
             </div>
         </div>
    
-        <div class="section style2">
+        <div class="section style1">
             <h1 class="slide-text">
                 <span>
                     What about this:
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <div class="section style2">
+        <div class="section style2 id="bubble-section">
             <div class="row" data-aos="fade-up" data-aos-delay="300">
                 <div class="col-12">
                     <h1 class="slide-text">Here are the number of total asylum application decisions compared with the accepted decisions:</h1>
@@ -176,14 +176,18 @@
         <div class="section style2">
             <h1 class="slide-text">
                 <span>
-                    You might have noticed the top countries are not necessarily those with the most economic resources.
+                    You might have noticed the top countries are not necessarily
+                </span>
+                <br>
+                <span>
+                    those with the most economic resources.
                 </span>
             </h1>
             <div class="row">
                 <div class="col-9">
                     <div id="scattervis"></div>
                 </div>
-                <div class="col-2">
+                <div class="col-2 sidetext">
                     <p>
                         <span>
                             Here’s how the asylum acceptances of different countries compare with their GDP (Gross Domestic Product in U.S. Dollars, a measure of the market value of a country's total goods and services).
@@ -255,14 +259,23 @@
             </div>
         </div>
    
-        <div class="section style2 container-fluid">
+        <div class="section style1">
             <h3>
-                Sources: 
+                Data Sources: 
             </h3>
             <ul>
                 <li>UNHCR Data: <a href="https://www.unhcr.org/refugee-statistics/">https://www.unhcr.org/refugee-statistics/</a></li>
-                <li>About UNHCR: <a href="https://www.unhcr.org/about-unhcr">https://www.unhcr.org/about-unhcr</a></li>
                 <li>World Bank Data: <a href="https://data.worldbank.org/">https://data.worldbank.org/</a></li>
+                <li>About UNHCR: <a href="https://www.unhcr.org/about-unhcr">https://www.unhcr.org/about-unhcr</a></li>
+            </ul>
+            <h3>
+                Research Sources: 
+            </h3>
+            <ul>
+                <li>UN Refugees "Five Takeaways from the 2022 UNHCR Global Trends Report": <a href="https://www.unrefugees.org/news/five-takeaways-from-the-2022-unhcr-global-trends-report/">https://www.unrefugees.org/news/five-takeaways-from-the-2022-unhcr-global-trends-report/</a></li>
+                <li>UN News "UNHCR calls for concerted action as forced displacement hits new high of 110 million": <a href="https://news.un.org/en/story/2023/06/1137652">https://news.un.org/en/story/2023/06/1137652</a></li>
+                <li>International Rescue Committee "110 million people displaced around the world: get the facts" <a href="https://www.rescue.org/article/110-million-people-displaced-around-world-get-facts">https://www.rescue.org/article/110-million-people-displaced-around-world-get-facts</a></li>
+                <li>Norweigan Refugee Council "A few countries take responsibility for most of the world’s refugees" <a href="https://www.nrc.no/shorthand/fr/a-few-countries-take-responsibility-for-most-of-the-worlds-refugees/index.html">https://www.nrc.no/shorthand/fr/a-few-countries-take-responsibility-for-most-of-the-worlds-refugees/index.html</a></li>
             </ul>
         </div>
     </div>
@@ -292,8 +305,8 @@
         licenseKey: 'gplv3-license',
         autoScrolling: true,
         navigation: true,
-        anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11"],
-        navigationTooltips: ['Home', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
+        anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11", "section12"],
+        navigationTooltips: ['Home', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         css3: false,
         afterLoad: function (origin, destination, direction, trigger) {
             // Necessary for AOS to work:
