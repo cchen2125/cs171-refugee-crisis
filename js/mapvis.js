@@ -271,7 +271,7 @@ class MapVis {
                 .attr("class", "bar-label")
                 .attr("x", d=> hbar_xScale(d.value) + 3)
                 .attr("y", d=> hbar_yScale(d.country) + hbar_yScale.bandwidth()/2 + 3)
-                .text(d=> d.value)
+                .text(d=> d3.format(",")(d.value))
 
             // second graph 
 
@@ -394,7 +394,7 @@ class MapVis {
                 .attr("class", "bar-label")
                 .attr("x", d=> hbar_xScale(d.value) + 3)
                 .attr("y", d=> hbar_yScale(d.country) + hbar_yScale.bandwidth()/2 + 3)
-                .text(d=> d.value)
+                .text(d=> d3.format(",")(d.value))
 
             let countryCode = asylumCountryData[0]["Country of asylum (ISO)"]
             let countryDecisions = vis.decisionData.filter(d=>{return (d["Country of asylum (ISO)"] == countryCode) && (vis.parseDate(d.Year) >= vis.min_date) && (vis.parseDate(d.Year) <= vis.max_date)})
